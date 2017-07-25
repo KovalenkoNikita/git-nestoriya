@@ -1,0 +1,23 @@
+@testColor: cornflowerblue;
+
+@test: ~" header, footer";
+@{test} {
+  display: inline-block;
+  height: 50px;
+  width: 100%;
+  background-color: @testColor;
+}
+section {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-content: space-around;
+}
+.content {
+   height: 300px;
+   width: 300px;
+   background-color: black;
+ }
+header {
+
+}
