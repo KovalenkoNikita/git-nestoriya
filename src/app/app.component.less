@@ -1,23 +1,62 @@
-@testColor: cornflowerblue;
+@backgroundHeader: #3f51b5;
+@colorNormal: #607d8d;
+@colorLight: #757575;
+@backgroundFon: #e1e1e1;
 
-@test: ~" header, footer";
+@test: ~" header";
 @{test} {
-  display: inline-block;
+  display: inline-flex;
+  justify-content: space-between;
   height: 50px;
   width: 100%;
-  background-color: @testColor;
+  background-color: @backgroundHeader;
 }
 section {
+  padding: 20px 0;
   display: flex;
   width: 100%;
   justify-content: space-around;
   align-content: space-around;
+  background-color: @backgroundFon;
+}
+router-outlet {
+  display: none;
 }
 .content {
    height: 300px;
    width: 300px;
    background-color: black;
- }
-header {
+}
+#logo {
+  background-image: url("../assets/nestoria.png");
+  height:40px;
+  width: 300px ;
+  margin: 5px 25px;
+}
+img {
+  width: 200px;
+}
 
+md-input-container {
+  width: 100%;
+}
+.main-search {
+  height: 800px;
+}
+.mdl-card__media {
+  margin: 0;
+}
+#faves {
+  height: 36px;
+  margin: 7px;
+  background-color: rgba(0,0,0,.2);
+  color: #fff;
+}
+footer {
+  display: inline-flex;
+  position: fixed;
+  bottom: 0;
+  height: 50px;
+  width: 100%;
+  background-color: @backgroundHeader;
 }

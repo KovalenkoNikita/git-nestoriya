@@ -1,0 +1,43 @@
+@colorNormal: #607d8d;
+@colorDark: #37474f;
+@colorLight: #757575;
+@colorFon: #e1e1e1;
+.row-search {
+  display: inline-flex;
+  justify-content: space-between;
+}
+button.mat-mini-fab.mat-accent {
+  margin-top: 17px;
+  margin-left: 8px;
+}
+.mat-fab.mat-accent, .mat-mini-fab.mat-accent, .mat-raised-button.mat-accent {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+@media screen and (max-width: 767px) {
+  .main-search {
+    height: 600px;
+  }
+}
+@media screen and (max-width: 1023px) and (min-width: 768px) {
+  .main-search {
+    height: 900px;
+  }
+  .main-search {
+    width: 400px;
+  }
+  md-input-container {
+    width: 350px;
+  }
+
+}
+@media screen and (min-width: 1024px) {
+  .main-search {
+    height: 1250px;
+  }
+  .main-search {
+    width: 600px;
+  }
+  md-input-container {
+    width: 550px;
+  }
+}
