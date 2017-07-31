@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule} from '@angular/router';
-import {JsonpModule} from '@angular/http';
+import { JsonpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { MyOwnCustomMaterialModule } from './my-own-custom-material/my-own-custom-material.module';
@@ -12,13 +12,18 @@ import { appRoutes } from './app.routes';
 import { RealtyPageComponent } from './realty-page/realty-page.component';
 import { SearchPageComponent } from './search-page/search-page.component';
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
+import { FooterComponent } from './footer/footer.component';
+import { FilterListComponent } from './filter-list/filter-list.component';
+import { HttpService } from "./http.service";
 
 @NgModule({
   declarations: [
     AppComponent,
     RealtyPageComponent,
     SearchPageComponent,
-    NotFoundPageComponent
+    NotFoundPageComponent,
+    FooterComponent,
+    FilterListComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +34,7 @@ import { NotFoundPageComponent } from './not-found-page/not-found-page.component
     MyOwnCustomMaterialModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  providers: [HttpService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

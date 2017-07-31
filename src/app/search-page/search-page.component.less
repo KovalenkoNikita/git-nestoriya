@@ -9,19 +9,15 @@
 button.mat-mini-fab.mat-accent {
   margin-top: 17px;
   margin-left: 8px;
+  background: rgba(0, 0, 0, 0.1);
 }
-.mat-fab.mat-accent, .mat-mini-fab.mat-accent, .mat-raised-button.mat-accent {
-  background-color: rgba(0, 0, 0, 0.2);
-}
-@media screen and (max-width: 767px) {
-  .main-search {
-    height: 600px;
-  }
+.main-search {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  padding: 10px 20px;
 }
 @media screen and (max-width: 1023px) and (min-width: 768px) {
-  .main-search {
-    height: 900px;
-  }
   .main-search {
     width: 400px;
   }
@@ -32,12 +28,17 @@ button.mat-mini-fab.mat-accent {
 }
 @media screen and (min-width: 1024px) {
   .main-search {
-    height: 1250px;
-  }
-  .main-search {
     width: 600px;
   }
   md-input-container {
     width: 550px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .main-search {
+    width: 300px;
+  }
+  md-input-container {
+    width: 350px;
   }
 }

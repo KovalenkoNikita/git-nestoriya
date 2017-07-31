@@ -1,3 +1,87 @@
-<p>
-  realty-page works!
-</p>
+<!--
+<app-filter-list>
+
+</app-filter-list>
+<div class="paginator">
+  <div class="items">
+    <md-card>
+      asdasd
+    </md-card>
+    <md-card>
+      asdasd
+    </md-card>
+    <md-card>
+      asdasd
+    </md-card>
+    <md-card>
+      asdasd
+    </md-card>
+    <md-card>
+      asdasd
+    </md-card>
+    <md-card>
+      asdasd
+    </md-card>
+    <md-card>
+      asdasd
+    </md-card>
+    <md-card>
+      asdasd
+    </md-card>
+    <md-card>
+      asdasd
+    </md-card>
+  </div>
+  <md-paginator [length]="length"
+                [pageSize]="pageSize"
+                [pageSizeOptions]="pageSizeOptions"
+                (page)="pageEvent = $event">
+  </md-paginator>
+</div>-->
+<button md-button class="button-view-filter" (click)="toggleFilter()">Filters</button>
+<md-sidenav-container class="example-sidenav-fab-container">
+  <md-sidenav #sidenav mode="side" opened="{{viewFilter}}">
+    <!--<button md-mini-fab class="example-fab" (click)="sidenav.toggle()">
+      <md-icon>add</md-icon>
+    </button>-->
+    <app-filter-list>
+
+    </app-filter-list>
+  </md-sidenav>
+  <div class="paginator">
+    <div class="items">
+      <md-card>
+        asdasd
+      </md-card>
+      <md-card>
+        asdasd
+      </md-card>
+      <md-card>
+        asdasd
+      </md-card>
+      <md-card>
+        asdasd
+      </md-card>
+      <md-card>
+        asdasd
+      </md-card>
+      <md-card>
+        asdasd
+      </md-card>
+      <md-card>
+        asdasd
+      </md-card>
+      <md-card>
+        asdasd
+      </md-card>
+      <md-card>
+        asdasd
+      </md-card>
+    </div>
+    <md-paginator [length]="length"
+                  [pageSize]="pageSize"
+                  [pageSizeOptions]="pageSizeOptions"
+                  (page)="pageEvent = $event">
+    </md-paginator>
+  </div>
+</md-sidenav-container>

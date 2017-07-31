@@ -7,15 +7,19 @@ import { HttpService } from "../http.service";
   styleUrls: ['./realty-page.component.less']
 })
 export class RealtyPageComponent implements OnInit {
+  viewFilter: boolean = true;
+  length = 100;
+  pageSize = 10;
+  pageSizeOptions = [5, 10, 25, 100];
 
+  listings: any = {};
   constructor(private httpService: HttpService) { }
 
   ngOnInit() {
-    this.httpService.getData()
-      .subscribe((resp: any) => {
-        let info = resp.json();
-        console.log(info);
-      });
+    let res = this.httpService.getJsonpData();
+    console.log(res);
   }
-
+  toggleFilter() {
+    this.viewFilter = !this.viewFilter;
+  }
 }

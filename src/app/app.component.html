@@ -1,12 +1,11 @@
 <header>
-  <div id="logo"></div>
+  <nav>
   <div class="title"></div>
-  <button md-button id="faves">Faves</button>
-
-  </header>
-<section>
-  <router-outlet></router-outlet>
-</section>
-<footer>
-
-</footer>
+  <div>
+    <button md-button class="header-button">My location</button>
+    <button md-button class="header-button">Faves</button>
+  </div>
+  </nav>
+</header>
+<router-outlet></router-outlet>
+<app-footer></app-footer>

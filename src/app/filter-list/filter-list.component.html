@@ -1,0 +1,15 @@
+<!--<p>
+  For Rent
+</p>
+<p>
+  For Sale
+</p>-->
+<md-input-container>
+  <input mdInput placeholder="Sort" [mdAutocomplete]="auto" [formControl]="stateCtrl">
+</md-input-container>
+
+<md-autocomplete #auto="mdAutocomplete">
+  <md-option *ngFor="let state of filteredStates | async" [value]="state">
+    {{ state }}
+  </md-option>
+</md-autocomplete>
