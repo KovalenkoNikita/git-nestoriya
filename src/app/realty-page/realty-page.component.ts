@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpService } from "../http.service";
+import {Component, OnInit} from '@angular/core';
+import {HttpService} from "../http.service";
+
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-realty-page',
@@ -8,17 +10,27 @@ import { HttpService } from "../http.service";
 })
 export class RealtyPageComponent implements OnInit {
   viewFilter: boolean = true;
-  length = 100;
+  length = 80;
   pageSize = 10;
-  pageSizeOptions = [5, 10, 25, 100];
+  pageSizeOptions = [5, 10, 25];
 
   listings: any = {};
-  constructor(private httpService: HttpService) { }
+
+  constructor(private httpService: HttpService) {
+  }
 
   ngOnInit() {
-    let res = this.httpService.getJsonpData();
-    console.log(res);
+    this.httpService.getTest('E postcode area')
+      .map((response: any) => {
+        console.log(response);
+        return response.json();
+      })
+      .subscribe((res) => {
+        console.log( res.response );
+        return res.response;
+      });
   }
+
   toggleFilter() {
     this.viewFilter = !this.viewFilter;
   }

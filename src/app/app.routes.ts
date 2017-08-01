@@ -9,7 +9,7 @@ export const appRoutes: Routes = [
     component: SearchPageComponent
   },
   {
-    path: ':sity',
+    path: ':sity/property/buy',
     component: RealtyPageComponent
   },
   {

@@ -1,27 +1,30 @@
 <div class="main-search">
-  <div class="row-search">
+  <!--<div class="row-search">
     <md-input-container>
       <input class="myInput" mdInput placeholder="e.g. London">
     </md-input-container>
     <button md-mini-fab>
       <img src="../../assets/ic_search_black_24dp/ic_search.png">
     </button>
-  </div>
-  <div class="list-group">
-    <a href="/" class="list-group-item list-group-item-action">London</a>
-    <a href="/" class="list-group-item list-group-item-action">New York</a>
-    <a href="/" class="list-group-item list-group-item-action">Berlin</a>
-    <a href="/" class="list-group-item list-group-item-action">Paris</a>
-    <a href="/" class="list-group-item list-group-item-action">Amsterdam</a>
-    <a href="/" class="list-group-item list-group-item-action">London</a>
-    <a href="/" class="list-group-item list-group-item-action">New York</a>
-    <a href="/" class="list-group-item list-group-item-action">Berlin</a>
-    <a href="/" class="list-group-item list-group-item-action">Paris</a>
-    <a href="/" class="list-group-item list-group-item-action">Amsterdam</a>
-    <a href="/" class="list-group-item list-group-item-action">London</a>
-    <a href="/" class="list-group-item list-group-item-action">New York</a>
-    <a href="/" class="list-group-item list-group-item-action">Berlin</a>
-    <a href="/" class="list-group-item list-group-item-action">Paris</a>
-    <a href="/" class="list-group-item list-group-item-action">Amsterdam</a>
+  </div>-->
+  <md-input-container>
+    <input mdInput placeholder="State" [mdAutocomplete]="auto" [formControl]="stateCtrl">
+  </md-input-container>
+
+  <md-autocomplete #auto="mdAutocomplete">
+    <md-option *ngFor="let state of filteredStates | async" [value]="state" (click)="routeCounty(state)">
+      {{ state }}
+    </md-option>
+  </md-autocomplete>
+  <div class="list-group" >
+    <a *ngFor="let item of searchHistory"
+       class="list-group-item list-group-item-action"
+       (click)="routeCounty(item)"
+    >{{item}}
+      <img class="delete-icon"
+           src="../../assets/icons/ic_clear_black_24px.svg"
+           (click)="removeItemSearchHistory(item);$event.stopPropagation()"
+      >
+    </a>
   </div>
 </div>
