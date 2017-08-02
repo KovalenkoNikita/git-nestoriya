@@ -1,0 +1,28 @@
+.filter {
+  margin-bottom: 25px;
+}
+md-select {
+  width: 200px;
+}
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+.example-margin {
+  margin: 10px;
+}
+.rent-sale {
+  display: flex;
+  height: 40px;
+}
+md-radio-group {
+  display: flex;
+}
+.example-margin {
+  margin: 10px 10px 10px 0;
+}
+md-grid-tile {
+  background-color: #607d8d;
+}

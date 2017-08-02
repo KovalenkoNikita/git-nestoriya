@@ -7,15 +7,23 @@
   </md-sidenav>
   <div class="paginator">
     <div class="items">
-      <md-card>
-        £34,900
+      <md-card *ngFor="let item of listings"
+               class="item">
+        <div class="item-icon">
+          <img src="{{item.img_url}}">
+        </div>
+        <div class="item-info">
+          <span class="price">{{item.price_formatted}}</span>
+          <span class="title">{{item.title}}</span>
+        </div>
+        <span></span>
       </md-card>
-
     </div>
     <md-paginator [length]="length"
                   [pageSize]="pageSize"
                   [pageSizeOptions]="pageSizeOptions"
-                  (page)="pageEvent = $event">
+                  (page)="reloadListing($event)"
+    >
     </md-paginator>
   </div>
 </md-sidenav-container>

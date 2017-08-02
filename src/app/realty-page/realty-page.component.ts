@@ -1,7 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpService} from "../http.service";
+import {ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
 
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toPromise';
+
+import {HttpService} from "../http.service";
 
 @Component({
   selector: 'app-realty-page',
@@ -9,29 +13,60 @@ import 'rxjs/add/operator/map';
   styleUrls: ['./realty-page.component.less']
 })
 export class RealtyPageComponent implements OnInit {
+  private subscription: Subscription;
+
   viewFilter: boolean = true;
   length = 80;
-  pageSize = 10;
+  pageSize = 5;
   pageSizeOptions = [5, 10, 25];
 
-  listings: any = {};
+  request: any = {
+    callback: 'JSONP_CALLBACK',
+    country: 'uk',
+    encoding: 'json',
+    action: 'search_listings',
+    number_of_results: this.pageSize,
+    page: 1,
+   };
 
-  constructor(private httpService: HttpService) {
+  response: any = {};
+  listings: any = [];
+
+  constructor(private httpService: HttpService,
+              private activateRoute: ActivatedRoute) {
   }
 
-  ngOnInit() {
-    this.httpService.getTest('E postcode area')
-      .map((response: any) => {
-        console.log(response);
-        return response.json();
+  public ngOnInit() {
+    this.subscription = this.activateRoute.params.subscribe((params): any => {
+      this.request['place_name'] = params['city'];
+    });
+    this.requestToApi();
+  }
+
+  requestToApi() {
+    this.httpService.getJsonpData(this.request)
+      .toPromise()
+      .then((resp: any) => {
+        console.log(resp.json());
+        return resp.json();
       })
-      .subscribe((res) => {
-        console.log( res.response );
-        return res.response;
+      .then((resp: any) => {
+        this.response = resp.response;
+      })
+      .then(() => {
+        this.listings = this.response['listings'];
+        this.length = this.response['total_results'];
+        console.log(this.listings);
       });
   }
 
-  toggleFilter() {
+  public toggleFilter() {
     this.viewFilter = !this.viewFilter;
+  }
+
+  public reloadListing(event) {
+    this.request.page = event.pageIndex + 1;
+    this.request.number_of_results = event.pageSize;
+    this.requestToApi();
   }
 }

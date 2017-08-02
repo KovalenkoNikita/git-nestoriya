@@ -1,16 +1,7 @@
 <div class="main-search">
-  <!--<div class="row-search">
-    <md-input-container>
-      <input class="myInput" mdInput placeholder="e.g. London">
-    </md-input-container>
-    <button md-mini-fab>
-      <img src="../../assets/ic_search_black_24dp/ic_search.png">
-    </button>
-  </div>-->
   <md-input-container>
     <input mdInput placeholder="State" [mdAutocomplete]="auto" [formControl]="stateCtrl">
   </md-input-container>
-
   <md-autocomplete #auto="mdAutocomplete">
     <md-option *ngFor="let state of filteredStates | async" [value]="state" (click)="routeCounty(state)">
       {{ state }}

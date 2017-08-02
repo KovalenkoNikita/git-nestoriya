@@ -26,4 +26,7 @@ app-root {
 router-outlet+* {
   flex-grow: 1;
 }
+router-outlet+app-realty-page{
+  display: flex;
+}
 

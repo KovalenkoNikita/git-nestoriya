@@ -1,3 +1,5 @@
+@color: #3f51b5;
+
 app-filter-list {
   width: 100%;
 }
@@ -7,8 +9,50 @@ md-sidenav-container, md-sidenav, md-paginator {
 md-sidenav {
   width: 280px;
 }
-app-filter-list, md-card {
-  margin: 10px;
+app-filter-list, .paginator {
+  padding: 10px;
+}
+.item img {
+  overflow: hidden;
+  margin: auto;
+}
+.item-icon {
+  display: flex;
+  width: 300px;
+  min-width: 300px;
+}
+.item {
+  margin-bottom: 15px;
+  padding: 12px;
+  display: flex;
+  &:hover {
+    box-shadow: 0 6px 20px #AFAFAF;
+    cursor: pointer;
+  }
+}
+.item-info {
+  flex-grow: 1;
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+}
+.item-info > * {
+  margin-bottom: 10px;
+}
+.item-info .price {
+  padding: 9px 14px;
+  background-color: @color;
+  border-radius: 2px;
+  width: 100px;
+  color: #fff;
+}
+.item-info .title {
+  color: @color;
+  font-size: larger;
+  font-weight: bold;
+}
+.paginator {
+  height: 100%;
 }
 .button-view-filter {
   position: absolute;
@@ -20,7 +64,6 @@ app-filter-list, md-card {
 
 .example-sidenav-fab-container {
   width: 100%;
-  height: 100%;
 }
 .example-sidenav-fab-container .mat-sidenav-content,
 .example-sidenav-fab-container md-sidenav {
@@ -30,4 +73,25 @@ app-filter-list, md-card {
 .example-scrolling-content {
   overflow: auto;
 }
-
+@media screen and (min-width: 1024px) {
+  .item > img {
+    width: 250px;
+  }
+}
+@media screen and (max-width: 1023px) and (min-width: 768px) {
+  .item > img {
+    width: 200px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .item {
+    flex-direction: column;
+  }
+  .item .item-icon {
+    width: 100%;
+  }
+  .item .item-info {
+    padding: 0;
+    flex-direction: column-reverse;
+  }
+}

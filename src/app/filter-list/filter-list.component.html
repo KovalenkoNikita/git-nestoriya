@@ -1,15 +1,32 @@
-<!--<p>
-  For Rent
-</p>
-<p>
-  For Sale
-</p>-->
-<!--<md-input-container>
-  <input mdInput placeholder="Sort" [mdAutocomplete]="auto" [formControl]="stateCtrl">
-</md-input-container>
+<md-card>
+  <div class="filter">
+    <md-radio-group>
+      <md-radio-button class="example-margin" value="primary" color="primary">
+        To Rent
+      </md-radio-button>
+      <md-radio-button class="example-margin" value="accent" color="primary">
+        For Sale
+      </md-radio-button>
+    </md-radio-group>
+  </div>
+  <div class="filter">
+    <form>
+      <md-select placeholder="Sort" [(ngModel)]="selectedValue" name="Sort">
+        <md-option *ngFor="let option of sortOptions" [value]="option.value">
+          {{option.viewValue}}
+        </md-option>
+      </md-select>
+    </form>
+  </div>
+  Beds
+  <md-grid-list cols="4" rowHeight="100px">
+    <md-grid-tile
+      *ngFor="let tile of tiles"
+      [colspan]="tile.cols"
+      [rowspan]="tile.rows"
+      [style.background]="tile.color">
+      {{tile.text}}
+    </md-grid-tile>
+  </md-grid-list>
 
-<md-autocomplete #auto="mdAutocomplete">
-  <md-option *ngFor="let state of filteredStates | async" [value]="state">
-    {{ state }}
-  </md-option>
-</md-autocomplete>-->
+</md-card>

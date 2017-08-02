@@ -11,28 +11,19 @@ import 'rxjs/add/operator/map';
 })
 export class FilterListComponent {
 
-  stateCtrl: FormControl;
-  filteredStates: any;
-  states = [
-    'Nestoria Rank',
-    'Price (low to high)',
-    'Price (high to low)',
-    'Beds (fewer first)',
-    'Beds (more first)',
-    'Date (older first)',
-    'Date (newer first)'
+  selectedValue: string = 'nestoria_rank';
+
+  sortOptions = [
+    {value: 'nestoria_rank', viewValue: 'Nestoria Rank'},
+    {value: 'price_lowhigh', viewValue: 'Price (low to high)'},
+    {value: 'price_highlow', viewValue: 'Price (high to low)'},
+    {value: 'bedroom_lowhigh', viewValue: 'Beds (fewer first)'},
+    {value: 'bedroom_highlow', viewValue: 'Beds (more first)'},
+    {value: 'oldest', viewValue: 'Date (older first)'},
+    {value: 'newest ', viewValue: 'Date (newer first)'}
   ];
 
   constructor() {
-    this.stateCtrl = new FormControl();
-    this.filteredStates = this.stateCtrl.valueChanges
-      .startWith(null)
-      .map(name => this.filterStates(name));
-  }
 
-  filterStates(val: string) {
-    return val ? this.states.filter(s => s.toLowerCase().indexOf(val.toLowerCase()) === 0)
-      : this.states;
   }
-
 }
