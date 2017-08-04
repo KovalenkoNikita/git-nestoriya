@@ -9,6 +9,9 @@ article, aside, canvas, details, embed, figure, figcaption, footer, header, hgro
   font: inherit;
   vertical-align: baseline;
 }
+body {
+  background-color: #e1e1e1;
+}
 app-root {
   position: absolute;
   top: 0;
@@ -28,5 +31,6 @@ router-outlet+* {
 }
 router-outlet+app-realty-page{
   display: flex;
+  margin-top: 35px;
 }
 

@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 @Component({
   selector: 'app-filter-list',
   templateUrl: './filter-list.component.html',
-  styleUrls: ['./filter-list.component.css']
+  styleUrls: ['./filter-list.component.less']
 })
 export class FilterListComponent {
 
@@ -21,6 +21,14 @@ export class FilterListComponent {
     {value: 'bedroom_highlow', viewValue: 'Beds (more first)'},
     {value: 'oldest', viewValue: 'Date (older first)'},
     {value: 'newest ', viewValue: 'Date (newer first)'}
+  ];
+
+  tiles = [
+    {text: 'Studio', cols: 2, rows: 1, color: 'white'},
+    {text: '1', cols: 1, rows: 1, color: 'white'},
+    {text: '2', cols: 1, rows: 1, color: 'white'},
+    {text: '3', cols: 1, rows: 1, color: 'white'},
+    {text: '4', cols: 1, rows: 1, color: 'white'},
   ];
 
   constructor() {

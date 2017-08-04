@@ -1,11 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs/Subscription';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+import { MdDialog, MdDialogRef } from '@angular/material';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
 import {HttpService} from "../http.service";
+import {AppComponent} from "../app.component";
 
 @Component({
   selector: 'app-realty-page',
@@ -15,7 +17,9 @@ import {HttpService} from "../http.service";
 export class RealtyPageComponent implements OnInit {
   private subscription: Subscription;
 
+  selectedOption: string;
   viewFilter: boolean = true;
+
   length = 80;
   pageSize = 5;
   pageSizeOptions = [5, 10, 25];
@@ -27,23 +31,33 @@ export class RealtyPageComponent implements OnInit {
     action: 'search_listings',
     number_of_results: this.pageSize,
     page: 1,
-   };
+  };
 
   response: any = {};
   listings: any = [];
 
   constructor(private httpService: HttpService,
-              private activateRoute: ActivatedRoute) {
+              private activateRoute: ActivatedRoute,
+              public dialog: MdDialog) {
   }
-
   public ngOnInit() {
     this.subscription = this.activateRoute.params.subscribe((params): any => {
       this.request['place_name'] = params['city'];
     });
     this.requestToApi();
+    AppComponent.onRouteClick.subscribe((country) => {
+      this.request['place_name'] = country;
+      this.requestToApi();
+    });
   }
-
-  requestToApi() {
+  public openDialogWindow(item: any) {
+    console.log(item);
+    let dialogRef = this.dialog.open(ModalDialogComponent, item);
+    dialogRef.afterClosed().subscribe(result => {
+      this.selectedOption = result;
+    });
+  }
+  public requestToApi() {
     this.httpService.getJsonpData(this.request)
       .toPromise()
       .then((resp: any) => {
@@ -59,14 +73,26 @@ export class RealtyPageComponent implements OnInit {
         console.log(this.listings);
       });
   }
-
   public toggleFilter() {
     this.viewFilter = !this.viewFilter;
   }
-
   public reloadListing(event) {
     this.request.page = event.pageIndex + 1;
     this.request.number_of_results = event.pageSize;
     this.requestToApi();
+  }
+}
+
+@Component({
+  selector: 'app-modal-dialog',
+  templateUrl: './modal-dialog.html'
+})
+export class ModalDialogComponent implements OnInit {
+
+  private item: any;
+
+  constructor(public dialogRef: MdDialogRef<ModalDialogComponent>) { }
+  public ngOnInit() {
+    console.log(this.dialogRef.componentInstance);
   }
 }

@@ -6,13 +6,8 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class HttpService {
 
-  apiRoot: string = 'https://api.nestoria.co.uk/api?';
-  property: any = {};
+  apiRoot: string = 'https://api.nestoria.co.uk/api';
   constructor(private jsonp: Jsonp, private http: Http) {
-    this.property['callback'] = 'JSONP_CALLBACK';
-    this.property['country'] = 'uk';
-    this.property['action'] = 'keywords';
-    this.property['encoding'] = 'json';
   }
 
   public getJsonpData(response: any) {

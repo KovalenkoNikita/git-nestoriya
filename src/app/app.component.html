@@ -1,12 +1,25 @@
 <header>
   <nav>
-  <div class="title"></div>
-  <div>
-    <button md-button class="header-button">My location</button>
-    <button md-button class="header-button">Faves</button>
-  </div>
+    <div class="title"></div>
+    <div>
+      <button md-button class="header-button">My location</button>
+      <button md-button class="header-button">Faves</button>
+    </div>
   </nav>
 </header>
-<!-- input -->
-<router-outlet></router-outlet> <!-- searchHistory -->
+<div class="search">
+  <div id="pmd-slider-range-tooltip-bottom-lower"
+       class="pmd-range-slider pmd-range-tooltip pmd-range-tooltip-left-bottom"
+  >
+  </div>
+  <md-input-container>
+    <input mdInput placeholder="State" [mdAutocomplete]="auto" [formControl]="stateCtrl">
+  </md-input-container>
+  <md-autocomplete #auto="mdAutocomplete">
+    <md-option *ngFor="let state of filteredStates | async" [value]="state" (click)="routeCounty(state)">
+      {{ state }}
+    </md-option>
+  </md-autocomplete>
+</div>
+<router-outlet></router-outlet>
 <app-footer></app-footer>

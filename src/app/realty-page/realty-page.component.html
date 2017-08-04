@@ -8,13 +8,17 @@
   <div class="paginator">
     <div class="items">
       <md-card *ngFor="let item of listings"
-               class="item">
+               class="item"
+               (click)="openDialogWindow(item)">
         <div class="item-icon">
           <img src="{{item.img_url}}">
         </div>
         <div class="item-info">
           <span class="price">{{item.price_formatted}}</span>
-          <span class="title">{{item.title}}</span>
+          <div>
+            <span class="title">{{item.title}}</span>
+            <span></span>
+          </div>
         </div>
         <span></span>
       </md-card>

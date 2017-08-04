@@ -9,7 +9,7 @@ import { JsonpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { MyOwnCustomMaterialModule } from './my-own-custom-material/my-own-custom-material.module';
 import { appRoutes } from './app.routes';
-import { RealtyPageComponent } from './realty-page/realty-page.component';
+import { RealtyPageComponent, ModalDialogComponent } from './realty-page/realty-page.component';
 import { SearchPageComponent } from './search-page/search-page.component';
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
 import { FooterComponent } from './footer/footer.component';
@@ -23,7 +23,8 @@ import { HttpService } from "./http.service";
     SearchPageComponent,
     NotFoundPageComponent,
     FooterComponent,
-    FilterListComponent
+    FilterListComponent,
+    ModalDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +37,6 @@ import { HttpService } from "./http.service";
     RouterModule.forRoot(appRoutes)
   ],
   providers: [HttpService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent, ModalDialogComponent ]
 })
 export class AppModule { }
