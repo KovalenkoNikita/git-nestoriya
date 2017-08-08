@@ -2,24 +2,27 @@
   <nav>
     <div class="title"></div>
     <div>
-      <button md-button class="header-button">My location</button>
-      <button md-button class="header-button">Faves</button>
+      <button md-button class="header-button" (click)="routeToMap()">Map</button>
+      <button md-button class="header-button" (click)="routeToFavesPage()">Faves</button>
     </div>
   </nav>
 </header>
-<div class="search">
-  <div id="pmd-slider-range-tooltip-bottom-lower"
-       class="pmd-range-slider pmd-range-tooltip pmd-range-tooltip-left-bottom"
-  >
-  </div>
-  <md-input-container>
-    <input mdInput placeholder="State" [mdAutocomplete]="auto" [formControl]="stateCtrl">
-  </md-input-container>
-  <md-autocomplete #auto="mdAutocomplete">
-    <md-option *ngFor="let state of filteredStates | async" [value]="state" (click)="routeCounty(state)">
-      {{ state }}
-    </md-option>
-  </md-autocomplete>
-</div>
 <router-outlet></router-outlet>
+<!--<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>-->
 <app-footer></app-footer>

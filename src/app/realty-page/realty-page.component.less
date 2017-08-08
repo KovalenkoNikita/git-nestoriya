@@ -9,12 +9,16 @@ md-sidenav-container, md-sidenav, md-paginator {
 md-sidenav {
   width: 280px;
 }
+md-sidenav-container {
+  flex-grow: 1;
+}
 app-filter-list, .paginator {
   padding: 10px;
 }
 .item img {
   overflow: hidden;
   margin: auto;
+  height: 225px;
 }
 .item-icon {
   display: flex;
@@ -28,7 +32,18 @@ app-filter-list, .paginator {
   &:hover {
     box-shadow: 0 6px 20px #AFAFAF;
     cursor: pointer;
+    button.example-fab.mat-mini-fab.mat-accent {
+      display: inline-block;
+    }
+    button.example-fab.mat-mini-fab.mat-accent:hover {
+      opacity: 1;
+    }
   }
+}
+button.example-fab.mat-mini-fab.mat-accent {
+  background-color: orange;
+  display: none;
+  opacity: .75;
 }
 .item-info {
   flex-grow: 1;
@@ -69,7 +84,15 @@ app-filter-list, .paginator {
 .example-sidenav-fab-container md-sidenav {
   display: flex;
 }
-
+.mat-sidenav-content {
+  flex-grow: 1;
+  display: flex;
+}
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  height: 36px;
+}
 .example-scrolling-content {
   overflow: auto;
 }

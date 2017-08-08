@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 import 'rxjs/add/operator/startWith';
@@ -10,7 +10,7 @@ import 'rxjs/add/operator/map';
   styleUrls: ['./search-page.component.less']
 })
 export class SearchPageComponent implements OnInit {
-  searchHistory: string[] = [];
+  @Input() searchHistory: string[] = [];
 
   ngOnInit() {
     this.getSearchHistory();
@@ -37,14 +37,11 @@ export class SearchPageComponent implements OnInit {
   }
   public setSearchHistory() {
     window.localStorage.setItem( 'search_history', this.searchHistory.join(',') );
-    console.log('2');
   }
   public getSearchHistory() {
     this.searchHistory = window.localStorage.getItem('search_history').split(',');
     if (this.searchHistory[0] === '') {
       this.searchHistory = [];
     }
-    console.log('get:');
-    console.log( this.searchHistory );
   }
 }

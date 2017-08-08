@@ -19,12 +19,15 @@
     </form>
   </div>
   Beds
-  <md-grid-list cols="2" rowHeight="50px">
+  <md-grid-list cols="2" rowHeight="40px">
     <md-grid-tile
       *ngFor="let tile of tiles"
       [colspan]="tile.cols"
       [rowspan]="tile.rows"
-      [style.background]="tile.color">
+      [style.background]="tile.background"
+      [style.color]="tile.color"
+      (click)="toggleBeds(tile)"
+    >
       {{tile.text}}
     </md-grid-tile>
   </md-grid-list>

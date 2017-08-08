@@ -31,6 +31,6 @@ router-outlet+* {
 }
 router-outlet+app-realty-page{
   display: flex;
-  margin-top: 35px;
+  flex-direction: column;
 }
 

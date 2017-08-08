@@ -1,0 +1,28 @@
+<button md-button class="home-button" (click)="routeToHome()">Home</button>
+<div class="form-group">
+  <input placeholder="search for location"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="off"
+         type="text"
+         class="form-control"
+         #search
+         [formControl]="searchControl">
+</div>
+<agm-map [latitude]="latitude"
+         [longitude]="longitude"
+         [zoom]="zoom"
+         [style.height]="heightMap">
+  <agm-marker [latitude]="latitude"
+              [longitude]="longitude"
+              [markerDraggable]="true"
+              (dragEnd)="func($event)"
+  ></agm-marker>
+  <agm-circle [latitude]="latitude"
+              [longitude]="longitude"
+              [radius]="5000"
+              [fillColor]="'red'"
+              [editable]="true"
+              (radiusChange)="radiusChange($event)"
+  ></agm-circle>
+</agm-map>

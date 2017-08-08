@@ -1,0 +1,32 @@
+.search {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  padding: 10px 20px;
+  height: 90px;
+}
+@media screen and (min-width: 1024px) {
+  .search {
+    width: 600px;
+  }
+  md-input-container {
+    width: 560px;
+  }
+}
+@media screen and (max-width: 1023px) and (min-width: 768px) {
+  .search {
+    width: 400px;
+  }
+  md-input-container {
+    width: 360px;
+  }
+
+}
+@media screen and (max-width: 767px) {
+  .search {
+    width: 300px;
+  }
+  md-input-container {
+    width: 260px;
+  }
+}

@@ -24,14 +24,24 @@ export class FilterListComponent {
   ];
 
   tiles = [
-    {text: 'Studio', cols: 2, rows: 1, color: 'white'},
-    {text: '1', cols: 1, rows: 1, color: 'white'},
-    {text: '2', cols: 1, rows: 1, color: 'white'},
-    {text: '3', cols: 1, rows: 1, color: 'white'},
-    {text: '4', cols: 1, rows: 1, color: 'white'},
+    {text: 'Studio', cols: 2, rows: 1},
+    {text: '1', cols: 1, rows: 1},
+    {text: '2', cols: 1, rows: 1},
+    {text: '3', cols: 1, rows: 1},
+    {text: '4', cols: 1, rows: 1},
   ];
 
   constructor() {
 
+  }
+  public toggleBeds(tile: any) {
+    tile.active = !tile.active;
+    if ( tile.active ) {
+      tile.background = '#666';
+      tile.color = 'orange';
+    } else {
+      tile.background = 'white';
+      tile.color = 'black';
+    }
   }
 }

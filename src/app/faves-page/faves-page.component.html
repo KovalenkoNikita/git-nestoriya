@@ -1,0 +1,31 @@
+<button md-button class="home-button" (click)="routeToHome()">Home</button>
+<div class="paginator">
+  <div class="items">
+    <md-card *ngFor="let item of listings"
+             class="item"
+             (click)="openDialogWindow(item)">
+      <div class="item-icon">
+        <img src="{{item.img_url}}">
+      </div>
+      <div class="item-info">
+        <div class="buttons">
+          <span class="price">{{item.price_formatted}}</span>
+          <button md-mini-fab class="example-fab">
+            <md-icon>add</md-icon>
+          </button>
+        </div>
+        <div>
+          <span class="title">{{item.title}}</span>
+          <span></span>
+        </div>
+      </div>
+      <span></span>
+    </md-card>
+  </div>
+  <md-paginator [length]="length"
+                [pageSize]="pageSize"
+                [pageSizeOptions]="pageSizeOptions"
+
+  ><!--(page)="reloadListing($event)"-->
+  </md-paginator>
+</div>
