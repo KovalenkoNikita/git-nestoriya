@@ -2,7 +2,7 @@
 <app-search-input></app-search-input>
 <md-sidenav-container class="example-sidenav-fab-container" (window:resize)="onResize($event)">
   <md-sidenav #sidenav mode="side" opened="{{viewFilter}}">
-    <app-filter-list>
+    <app-filter-list (changeFilter)="getFilter($event)">
 
     </app-filter-list>
   </md-sidenav>
@@ -17,7 +17,10 @@
         <div class="item-info">
           <div class="buttons">
             <span class="price">{{item.price_formatted}}</span>
-            <button md-mini-fab class="example-fab" (click)="addToFaves(item); $event.stopPropagation()">
+            <button md-mini-fab
+                    class="example-fab"
+                    (click)="addToFaves(item); $event.stopPropagation()">
+                    <!--[ngClass]="{disable: findElemToFaves(item, myFaves)}"   -->
               <md-icon>add</md-icon>
             </button>
           </div>

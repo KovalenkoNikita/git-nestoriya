@@ -15,7 +15,7 @@ export const appRoutes: Routes = [
     component: GoogleMapComponent
   },
   {
-    path: 'faves/:id',
+    path: 'faves/:idPage',
     component: FavesPageComponent
   },
   {

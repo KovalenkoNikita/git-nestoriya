@@ -1,35 +1,68 @@
 <md-card>
   <div class="filter">
     <md-radio-group>
-      <md-radio-button class="example-margin" value="primary" color="primary">
+      <md-radio-button class="example-margin"
+                       value="rent"
+                       color="primary"
+                       (change)="changeListingType($event.value)"
+                       [checked]="listing_type === 'rent' ? true : false">
         To Rent
       </md-radio-button>
-      <md-radio-button class="example-margin" value="accent" color="primary">
+      <md-radio-button class="example-margin"
+                       value="buy"
+                       color="primary"
+                       (change)="changeListingType($event.value)"
+                       [checked]="listing_type === 'buy' ? true : false">
         For Sale
       </md-radio-button>
     </md-radio-group>
   </div>
   <div class="filter">
     <form>
-      <md-select placeholder="Sort" [(ngModel)]="selectedValue" name="Sort">
+      <md-select placeholder="Sort" [(ngModel)]="filter.sort" name="Sort" (change)="getUpFilter()">
         <md-option *ngFor="let option of sortOptions" [value]="option.value">
           {{option.viewValue}}
         </md-option>
       </md-select>
     </form>
   </div>
-  Beds
+  <span class="filter-title">Beds</span>
   <md-grid-list cols="2" rowHeight="40px">
     <md-grid-tile
-      *ngFor="let tile of tiles"
+      *ngFor="let tile of bedOptions"
+      [ngClass]="{tileActive: tile.active}"
       [colspan]="tile.cols"
       [rowspan]="tile.rows"
-      [style.background]="tile.background"
-      [style.color]="tile.color"
-      (click)="toggleBeds(tile)"
+      (click)="toggleTile(tile, 'bedroom')"
     >
       {{tile.text}}
     </md-grid-tile>
   </md-grid-list>
-
+  <span class="filter-title">Price</span>
+  <div class="double-range-slider">
+  </div>
+  <span class="filter-title">Property type</span>
+  <md-grid-list cols="1" rowHeight="40px">
+    <md-grid-tile
+      *ngFor="let tile of propertyTypes"
+      [ngClass]="{tileActive: tile.active}"
+      [colspan]="tile.cols"
+      [rowspan]="tile.rows"
+      (click)="selectProperty(tile.text)"
+    >
+      {{tile.text}}
+    </md-grid-tile>
+  </md-grid-list>
+  <span class="filter-title">Bathrooms</span>
+  <md-grid-list cols="2" rowHeight="40px">
+    <md-grid-tile
+      *ngFor="let tile of bathOptions"
+      [ngClass]="{tileActive: tile.active}"
+      [colspan]="tile.cols"
+      [rowspan]="tile.rows"
+      (click)="toggleTile(tile, 'bathroom')"
+    >
+      {{tile.text}}
+    </md-grid-tile>
+  </md-grid-list>
 </md-card>

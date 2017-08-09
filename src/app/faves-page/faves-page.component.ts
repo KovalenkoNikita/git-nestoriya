@@ -11,30 +11,57 @@ import { Router } from '@angular/router';
 export class FavesPageComponent implements OnInit, OnDestroy {
 
   length = 80;
-  currPage: number;
+  currPage: number = 0;
   pageSize = 5;
   pageSizeOptions = [5, 10, 25];
+  myFaves:  any = [];
   listings: any = [];
-
-  constructor(private router: Router) { }
+  subscription: Subscription;
+  constructor(private router: Router,
+              private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.getMyFaves();
+    this.subscription = this.activatedRoute.params.subscribe((params: any) => {
+      this.currPage = params['idPage'] - 1;
+      this.getMyFaves();
+      this.length = this.myFaves.length;
+      this.reloadListing();
+    });
   }
   public setMyFaves() {
-    window.localStorage.setItem( 'myFaves',  JSON.stringify(this.listings) );
+    window.localStorage.setItem( 'myFaves',  JSON.stringify(this.myFaves) );
   }
   public getMyFaves() {
-    this.listings = JSON.parse( window.localStorage.getItem('myFaves') );
-    if (this.listings === null || this.listings[0] === '') {
-      this.listings = [];
+    this.myFaves = JSON.parse( window.localStorage.getItem('myFaves') );
+    if (this.myFaves === null || this.myFaves[0] === '') {
+      this.myFaves = [];
     }
+  }
+  public openDialogWindow(item: any) {
+    console.log(item);
+  }
+  public deleteElem(item: any) {
+    let index = this.myFaves.indexOf(item);
+    this.myFaves.splice(index, 1);
+    this.setMyFaves();
+    this.reloadListing();
   }
   public routeToHome() {
     this.router.navigate(['']);
   }
-
+  public refreshPageSettings(event) {
+    this.currPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.router.navigate(['faves/' + (this.currPage + 1)]);
+    //this.reloadListing();
+  }
+  public reloadListing() {
+    let start = this.currPage * this.pageSize;
+    let end = start + this.pageSize;
+    this.listings = this.myFaves.slice(start, end);
+    this.length = this.myFaves.length;
+  }
   public ngOnDestroy() {
-    //
+    this.subscription.unsubscribe();
   }
 }

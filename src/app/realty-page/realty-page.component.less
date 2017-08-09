@@ -12,7 +12,7 @@ md-sidenav {
 md-sidenav-container {
   flex-grow: 1;
 }
-app-filter-list, .paginator {
+app-filter-list, .items {
   padding: 10px;
 }
 .item img {
@@ -39,6 +39,9 @@ app-filter-list, .paginator {
       opacity: 1;
     }
   }
+}
+.disable {
+  opacity: .5;
 }
 button.example-fab.mat-mini-fab.mat-accent {
   background-color: orange;
@@ -117,9 +120,13 @@ button.example-fab.mat-mini-fab.mat-accent {
   .item .item-info {
     padding: 0;
     flex-direction: column-reverse;
+    margin-top: 10px;
   }
   .item-icon {;
     width: 260px;
     min-width: 260px;
+  }
+  button.example-fab.mat-mini-fab.mat-accent {
+    display: inline-block;
   }
 }

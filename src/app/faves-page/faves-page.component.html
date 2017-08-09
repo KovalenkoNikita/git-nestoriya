@@ -10,8 +10,11 @@
       <div class="item-info">
         <div class="buttons">
           <span class="price">{{item.price_formatted}}</span>
-          <button md-mini-fab class="example-fab">
-            <md-icon>add</md-icon>
+          <button md-mini-fab
+                  class="example-fab"
+                  (click)="deleteElem(item)"
+          >
+            <md-icon>delete</md-icon>
           </button>
         </div>
         <div>
@@ -26,6 +29,7 @@
                 [pageSize]="pageSize"
                 [pageSizeOptions]="pageSizeOptions"
 
-  ><!--(page)="reloadListing($event)"-->
+                (page)="refreshPageSettings($event)"
+  >
   </md-paginator>
 </div>

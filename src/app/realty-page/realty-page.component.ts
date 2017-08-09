@@ -17,7 +17,7 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   @Output() sendUpValue: EventEmitter<any> = new EventEmitter();
   selectedOption: string; // for input_search
-  viewFilter: boolean = true;
+  viewFilter: boolean;
 
   length = 80;
   pageSize = 5;
@@ -31,7 +31,7 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
     number_of_results: this.pageSize,
     page: 1,
   };
-
+  myFaves:  any = [];
   response: any = {};
   listings: any = [];
 
@@ -39,12 +39,18 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
               private activateRoute: ActivatedRoute) {
   }
   public ngOnInit() {
+    if (window.innerWidth < 800) {
+      this.viewFilter = false;
+    } else {
+      this.viewFilter = true;
+    }
+
     this.subscription = this.activateRoute.params.subscribe((params): any => {
       this.request['place_name'] = params['city'];
-      console.log(params);
       this.sendUpValue.emit(this.request['place_name']);
+      this.getMyFaves();
+      this.requestToApi();
     });
-    this.requestToApi();
     SearchInputComponent.onRouteClick.subscribe((country) => {
       this.request['place_name'] = country;
       this.sendUpValue.emit(this.request['place_name']);
@@ -57,6 +63,40 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
     } else {
       this.viewFilter = true;
     }
+  }
+  private findElemToFaves(elem, array) {
+    for ( let i = 0; i < array.length; i++ ) {
+      if (array[i]['lister_url'] === elem['lister_url']) {
+        return true;
+      }
+    }
+    return false;
+  }
+  public addToFaves(item: any) {
+    if ( !this.findElemToFaves(item, this.myFaves) ) {
+      this.setMyFaves(item);
+    }
+  }
+  public setMyFaves(item) {
+   if (item) {
+     this.myFaves.push(item);
+     window.localStorage.setItem( 'myFaves',  JSON.stringify(this.myFaves) );
+    }
+  }
+  public getMyFaves() {
+    this.myFaves = JSON.parse( window.localStorage.getItem('myFaves') );
+    if (this.myFaves === null || this.myFaves[0] === '') {
+      this.myFaves = [];
+    }
+  }
+  public getFilter(filter: any) {
+    console.log(filter);
+
+    for(let key in filter) {
+      console.log(key + ' = ' + filter[key]);
+      this.request[key] = filter[key];
+    }
+    this.requestToApi();
   }
   public openDialogWindow(item: any) {
     console.log(item);
@@ -74,7 +114,6 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
       .then(() => {
         this.listings = this.response['listings'];
         this.length = this.response['total_results'];
-        console.log(this.listings);
       });
   }
   public toggleFilter() {
@@ -86,7 +125,6 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
     this.requestToApi();
   }
   ngOnDestroy() {
-    console.log('ngOnDestroy');
     this.subscription.unsubscribe();
   }
 }

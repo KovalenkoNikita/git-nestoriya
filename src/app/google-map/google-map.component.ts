@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone, ViewChild, ElementRef } from '@angular/core';
 import { FormControl } from "@angular/forms";
 import { Router } from '@angular/router';
-import { MapsAPILoader, LatLng } from '@agm/core';
+import { MapsAPILoader } from '@agm/core';
 
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
