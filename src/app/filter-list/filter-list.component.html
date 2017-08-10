@@ -19,7 +19,7 @@
   </div>
   <div class="filter">
     <form>
-      <md-select placeholder="Sort" [(ngModel)]="filter.sort" name="Sort" (change)="getUpFilter()">
+      <md-select placeholder="Sort" [(ngModel)]="sort" name="Sort" (change)="getUpFilter()">
         <md-option *ngFor="let option of sortOptions" [value]="option.value">
           {{option.viewValue}}
         </md-option>
@@ -33,7 +33,7 @@
       [ngClass]="{tileActive: tile.active}"
       [colspan]="tile.cols"
       [rowspan]="tile.rows"
-      (click)="toggleTile(tile, 'bedroom')"
+      (click)="toggleTile(tile, 'bedrooms')"
     >
       {{tile.text}}
     </md-grid-tile>
@@ -46,6 +46,7 @@
     <md-grid-tile
       *ngFor="let tile of propertyTypes"
       [ngClass]="{tileActive: tile.active}"
+      [ngStyle]="{'text-transform':'capitalize'}"
       [colspan]="tile.cols"
       [rowspan]="tile.rows"
       (click)="selectProperty(tile.text)"
@@ -57,10 +58,9 @@
   <md-grid-list cols="2" rowHeight="40px">
     <md-grid-tile
       *ngFor="let tile of bathOptions"
-      [ngClass]="{tileActive: tile.active}"
       [colspan]="tile.cols"
       [rowspan]="tile.rows"
-      (click)="toggleTile(tile, 'bathroom')"
+      (click)="toggleTile(tile, 'bathrooms')"
     >
       {{tile.text}}
     </md-grid-tile>

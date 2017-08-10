@@ -16,6 +16,7 @@
   <agm-marker [latitude]="latitude"
               [longitude]="longitude"
               [markerDraggable]="true"
+              (markerClick)="routeByCoords($event)"
               (dragEnd)="func($event)"
   ></agm-marker>
   <agm-circle [latitude]="latitude"

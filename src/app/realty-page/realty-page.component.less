@@ -12,8 +12,14 @@ md-sidenav {
 md-sidenav-container {
   flex-grow: 1;
 }
+
 app-filter-list, .items {
   padding: 10px;
+}
+.paginator {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .item img {
   overflow: hidden;
@@ -40,9 +46,6 @@ app-filter-list, .items {
     }
   }
 }
-.disable {
-  opacity: .5;
-}
 button.example-fab.mat-mini-fab.mat-accent {
   background-color: orange;
   display: none;
@@ -53,6 +56,33 @@ button.example-fab.mat-mini-fab.mat-accent {
   padding: 0 10px;
   display: flex;
   flex-direction: column;
+  .description {
+    display: flex;
+    flex-direction: column;
+    * {
+      margin-bottom: 5px;
+    }
+    ul {
+      display: inline-flex;
+      flex-wrap: wrap;
+      li {
+        line-height: 19px;
+        font-size: 1.2em;
+        font-weight: 400;
+        text-transform: capitalize;
+        list-style-type: none;
+        .separator {
+          font-weight: bold;
+          margin-right: 5px;
+        }
+      }
+    }
+    .short-description {
+      color: #a1a1a1;
+      font-size: 1.2em;
+      font-weight: 400;
+    }
+  }
 }
 .item-info > * {
   margin-bottom: 10px;
@@ -61,7 +91,6 @@ button.example-fab.mat-mini-fab.mat-accent {
   padding: 9px 14px;
   background-color: @color;
   border-radius: 2px;
-  width: 100px;
   color: #fff;
 }
 .item-info .title {

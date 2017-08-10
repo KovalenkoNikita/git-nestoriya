@@ -14,8 +14,8 @@ import 'rxjs/add/operator/toPromise';
 })
 export class GoogleMapComponent implements OnInit {
 
-  public latitude: number;
-  public longitude: number;
+  public latitude: number = 1;
+  public longitude: number = 1;
   public searchControl: FormControl;
   public zoom: number;
   public radius: number = 2000;
@@ -35,6 +35,8 @@ export class GoogleMapComponent implements OnInit {
     console.log(this.heightMap);
     this.searchControl = new FormControl();
     this.setCurrentPosition();
+    console.log(this.longitude);
+    console.log(this.latitude);
 
     this.mapsAPILoader.load().then(() => {
       let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
@@ -58,19 +60,25 @@ export class GoogleMapComponent implements OnInit {
       });
     });
   }
+  window.onload(){
+
+}
   func(event: any) {
     /* lat:51.511446425131
      lng:-0.10418181660156733*/
     console.log(event);
-    this.latitude = event.coords.lat;
-    this.longitude = event.coords.lng;
+
+    /*this.latitude = event.coords.lat;
+    this.longitude = event.coords.lng;*/
+  }
+  routeByCoords(event: any) {
+    console.log(event);
   }
   private setCurrentPosition() {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        console.log(position.coords);
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
+     if ("geolocation" in navigator) {
+      let coords = navigator.geolocation.getCurrentPosition((position) => {
+        this.latitude = +position.coords.latitude;
+        this.longitude = +position.coords.longitude;
         this.zoom = 11;
       });
     }

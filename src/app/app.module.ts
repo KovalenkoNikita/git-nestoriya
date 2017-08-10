@@ -19,7 +19,6 @@ import { FilterListComponent } from './filter-list/filter-list.component';
 import { FavesPageComponent } from  './faves-page/faves-page.component';
 import { GoogleMapComponent } from './google-map/google-map.component'
 import { HttpService } from "./http.service";
-
 @NgModule({
   declarations: [
     AppComponent,

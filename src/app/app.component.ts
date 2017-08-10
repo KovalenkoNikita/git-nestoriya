@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit  } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,13 +6,13 @@ import { Router } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements  AfterViewInit  {
 
 
   constructor(private router: Router) {
   }
-  ngOnInit() {
-
+  ngAfterViewInit () {
+    //document.body.className = 'loaded';
   }
   public routeToFavesPage() {
     this.router.navigate(['/faves/1']);

@@ -19,11 +19,11 @@ export const appRoutes: Routes = [
     component: FavesPageComponent
   },
   {
-    path: 'coord_:coord/property/buy',
+    path: 'coord_:coord/property/:listing_type',
     component: RealtyPageComponent
   },
   {
-    path: ':city/property/buy',
+    path: ':city/property/:listing_type',
     component: RealtyPageComponent
   },
   {

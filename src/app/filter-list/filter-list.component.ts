@@ -1,5 +1,6 @@
-import {Component, Output, EventEmitter } from '@angular/core';
-
+import {Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 
@@ -8,22 +9,16 @@ import 'rxjs/add/operator/map';
   templateUrl: './filter-list.component.html',
   styleUrls: ['./filter-list.component.less']
 })
-export class FilterListComponent {
+export class FilterListComponent implements OnInit {
 
-  listing_type: string  = 'buy';
   @Output() changeFilter: EventEmitter<any> = new EventEmitter();
-  bathroom: any=  [];
-  bedroom: any=  [];
-  filter: any = {
-    listing_type: 'buy',
-    sort: 'nestoria_rank',
-    property_type: 'All',
-    bedroom_min: 0,
-    bedroom_max: 20,
-    bathroom_min: 0,
-    bathroom_max: 20,
-  };
-  sortOptions = [
+  private subscription: Subscription;
+  private place_name: string;
+  private listing_type: string;
+  private sort: string = 'nestoria_rank';
+  private property_type: string = 'all';
+  private filter: any = {};
+  private sortOptions = [
     {value: 'nestoria_rank', viewValue: 'Nestoria Rank'},
     {value: 'price_lowhigh', viewValue: 'Price (low to high)'},
     {value: 'price_highlow', viewValue: 'Price (high to low)'},
@@ -32,57 +27,67 @@ export class FilterListComponent {
     {value: 'oldest', viewValue: 'Date (older first)'},
     {value: 'newest ', viewValue: 'Date (newer first)'}
   ];
-
-  bedOptions = [
+  private bedOptions = [
     {text: 'Studio', value: 0, cols: 2, rows: 1},
     {text: '1', value: 1, cols: 1, rows: 1},
     {text: '2', value: 2, cols: 1, rows: 1},
     {text: '3', value: 3, cols: 1, rows: 1},
-    {text: '4+', value: 20, cols: 1, rows: 1},
+    {text: '4+', value: 4, cols: 1, rows: 1},
   ];
-  propertyTypes = [
-    {text: 'All', cols: 1, rows: 1, active: true},
-    {text: 'Flat', cols: 1, rows: 1, active: false},
-    {text: 'House', cols: 1, rows: 1, active: false},
+  private propertyTypes = [
+    {text: 'all', cols: 1, rows: 1, active: true},
+    {text: 'flat', cols: 1, rows: 1, active: false},
+    {text: 'house', cols: 1, rows: 1, active: false},
   ];
-  bathOptions = [
+  private bathOptions = [
     {text: '1', value: 1, cols: 1, rows: 1},
     {text: '2', value: 2, cols: 1, rows: 1},
     {text: '3', value: 3, cols: 1, rows: 1},
-    {text: '4+', value: 20, cols: 1, rows: 1},
+    {text: '4+', value: 4, cols: 1, rows: 1},
   ];
 
-  constructor() {
+  constructor(private router: Router,
+              private activateRoute: ActivatedRoute) {
 
+  }
+  ngOnInit() {
+    this.subscription = this.activateRoute.params.subscribe((params): any => {
+      this.place_name = params['city'];
+      this.listing_type = params['listing_type'];
+    });
   }
   public toggleTile(tile: any, title: string) {
     tile.active = !tile.active;
+    let tmpArray = [];
     if ( tile.active ) {
-      this[title].push(tile.value);
+      if (this.filter[title]) {
+        tmpArray = this.filter[title].split(',');
+      }
+      tmpArray.push(tile.value);
+      this.filter[title] = tmpArray.join(',');
     } else {
-      console.log(tile.value);
-      let index = this[title].indexOf(tile.value);
-      this[title].splice(index, 1);
+      tmpArray = this.filter[title].split(',');
+      let index = tmpArray.indexOf(tile.value);
+      tmpArray.splice(index, 1);
+      if ( tmpArray.length === 0) {
+        delete this.filter[title];
+      } else {
+        this.filter[title] = tmpArray.join(',');
+      }
     }
-   /* if (this[title].length !== 0) {
-      console.log(this[title] + '====' + Math.min(this[title]));
-      this.filter[title + '_min'] = Math.min(this[title]);
-      this.filter[title + '_max'] = Math.max(this[title]);
-    } else {
-      this.filter[title + '_min'] = 0;
-      this.filter[title + '_max'] = 20;
-    }*/
-
     this.getUpFilter();
   }
   public selectProperty(value: any) {
     for ( let tile of this.propertyTypes) {
       if (tile.text === value) {
         if (  tile.active === false) {
-          this.filter.property_type = tile.text;
-
+          this.property_type = tile.text;
+          if (this.property_type !== 'all') {
+            this.filter.property_type = this.property_type;
+          } else {
+            delete this.filter.property_type;
+          }
           this.getUpFilter();
-          //reload
         }
         tile.active = true;
       } else {
@@ -92,10 +97,10 @@ export class FilterListComponent {
   }
   public changeListingType(value: string) {
     this.listing_type = value;
-    this.filter.listing_type = value;
     this.getUpFilter();
   }
   private getUpFilter() {
-    this.changeFilter.emit(this.filter);
+    this.router.navigate([this.place_name, 'property', this.listing_type], { queryParams: this.filter} );
+    //this.changeFilter.emit(this.filter);
   }
 }

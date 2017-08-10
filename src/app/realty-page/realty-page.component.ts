@@ -8,6 +8,8 @@ import 'rxjs/add/operator/toPromise';
 import { HttpService } from "../http.service";
 import { SearchInputComponent } from "../search-input/search-input.component";
 
+declare var $: any;
+
 @Component({
   selector: 'app-realty-page',
   templateUrl: './realty-page.component.html',
@@ -15,10 +17,11 @@ import { SearchInputComponent } from "../search-input/search-input.component";
 })
 export class RealtyPageComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
+  private querySubscription: Subscription;
   @Output() sendUpValue: EventEmitter<any> = new EventEmitter();
   selectedOption: string; // for input_search
   viewFilter: boolean;
-
+  hiddenLoader: boolean = true;
   length = 80;
   pageSize = 5;
   pageSizeOptions = [5, 10, 25];
@@ -44,13 +47,20 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
     } else {
       this.viewFilter = true;
     }
+    this.querySubscription = this.activateRoute.queryParams.subscribe(
+      (queryParam: any) => {
+        this.getFilter(queryParam);
+      }
+    );
 
     this.subscription = this.activateRoute.params.subscribe((params): any => {
       this.request['place_name'] = params['city'];
+      this.request['listing_type'] = params['listing_type'];
       this.sendUpValue.emit(this.request['place_name']);
       this.getMyFaves();
       this.requestToApi();
     });
+
     SearchInputComponent.onRouteClick.subscribe((country) => {
       this.request['place_name'] = country;
       this.sendUpValue.emit(this.request['place_name']);
@@ -92,16 +102,17 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
   public getFilter(filter: any) {
     console.log(filter);
 
-    for(let key in filter) {
+    /*for(let key in filter) {
       console.log(key + ' = ' + filter[key]);
       this.request[key] = filter[key];
-    }
-    this.requestToApi();
+    }*/
   }
   public openDialogWindow(item: any) {
     console.log(item);
   }
   public requestToApi() {
+    this.listings = [];
+    this.hiddenLoader = true;
     this.httpService.getJsonpData(this.request)
       .toPromise()
       .then((resp: any) => {
@@ -113,7 +124,9 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
       })
       .then(() => {
         this.listings = this.response['listings'];
+        console.log(this.listings);
         this.length = this.response['total_results'];
+        this.hiddenLoader = false;
       });
   }
   public toggleFilter() {
@@ -126,5 +139,6 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.querySubscription.unsubscribe();
   }
 }
