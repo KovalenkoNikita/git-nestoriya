@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, EventEmitter } from '@angular/core';
+import {Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/startWith';
@@ -10,14 +10,18 @@ import 'rxjs/add/operator/map';
   styleUrls: ['./filter-list.component.less']
 })
 export class FilterListComponent implements OnInit {
-
-  @Output() changeFilter: EventEmitter<any> = new EventEmitter();
   private subscription: Subscription;
+  private querySubscription: Subscription;
   private place_name: string;
   private listing_type: string;
-  private sort: string = 'nestoria_rank';
-  private property_type: string = 'all';
-  private filter: any = {};
+  // private sort: string = 'nestoria_rank';
+  // private property_type: string = 'all';
+  private filter: any = {
+    sort: 'nestoria_rank',
+    bathrooms: '',
+    bedrooms: '',
+    property_type: 'all'
+  };
   private sortOptions = [
     {value: 'nestoria_rank', viewValue: 'Nestoria Rank'},
     {value: 'price_lowhigh', viewValue: 'Price (low to high)'},
@@ -27,23 +31,23 @@ export class FilterListComponent implements OnInit {
     {value: 'oldest', viewValue: 'Date (older first)'},
     {value: 'newest ', viewValue: 'Date (newer first)'}
   ];
-  private bedOptions = [
-    {text: 'Studio', value: 0, cols: 2, rows: 1},
-    {text: '1', value: 1, cols: 1, rows: 1},
-    {text: '2', value: 2, cols: 1, rows: 1},
-    {text: '3', value: 3, cols: 1, rows: 1},
-    {text: '4+', value: 4, cols: 1, rows: 1},
+  private bedrooms = [
+    {text: 'Studio', value: '0', cols: 2, rows: 1, active: false},
+    {text: '1', value: '1', cols: 1, rows: 1, active: false},
+    {text: '2', value: '2', cols: 1, rows: 1, active: false},
+    {text: '3', value: '3', cols: 1, rows: 1, active: false},
+    {text: '4+', value: '4', cols: 1, rows: 1, active: false},
   ];
   private propertyTypes = [
     {text: 'all', cols: 1, rows: 1, active: true},
     {text: 'flat', cols: 1, rows: 1, active: false},
     {text: 'house', cols: 1, rows: 1, active: false},
   ];
-  private bathOptions = [
-    {text: '1', value: 1, cols: 1, rows: 1},
-    {text: '2', value: 2, cols: 1, rows: 1},
-    {text: '3', value: 3, cols: 1, rows: 1},
-    {text: '4+', value: 4, cols: 1, rows: 1},
+  private bathrooms = [
+    {text: '1', value: '1', cols: 1, rows: 1, active: false},
+    {text: '2', value: '2', cols: 1, rows: 1, active: false},
+    {text: '3', value: '3', cols: 1, rows: 1, active: false},
+    {text: '4+', value: '4', cols: 1, rows: 1, active: false},
   ];
 
   constructor(private router: Router,
@@ -55,38 +59,60 @@ export class FilterListComponent implements OnInit {
       this.place_name = params['city'];
       this.listing_type = params['listing_type'];
     });
+    this.querySubscription = this.activateRoute.queryParams.subscribe(
+      (queryParam: any) => {
+        for ( let key in queryParam ) {
+          this.filter[key] = queryParam[key];
+          switch (key) {
+            case 'bathrooms':
+              for ( let obj of this.bathrooms) {
+                if ( ~this.filter.bathrooms.indexOf(obj.value) ) {
+                  obj.active = true;
+                }
+              }
+              break;
+            case 'bedrooms':
+              for ( let obj of this.bedrooms) {
+                if ( ~this.filter.bedrooms.indexOf(obj.value) ) {
+                  obj.active = true;
+                }
+              }
+              break;
+            case 'property_type':
+              for ( let obj of this.propertyTypes) {
+                if ( ~this.filter.property_type.indexOf(obj.text) ) {
+                  obj['active'] = true;
+                } else {
+                  obj['active'] = false;
+                }
+              }
+              break;
+          }
+        }
+      }
+    );
   }
   public toggleTile(tile: any, title: string) {
     tile.active = !tile.active;
     let tmpArray = [];
+    tmpArray = this.filter[title].split(',');
     if ( tile.active ) {
-      if (this.filter[title]) {
-        tmpArray = this.filter[title].split(',');
+      if (tmpArray[0] === '') {
+        tmpArray = [];
       }
       tmpArray.push(tile.value);
-      this.filter[title] = tmpArray.join(',');
     } else {
-      tmpArray = this.filter[title].split(',');
       let index = tmpArray.indexOf(tile.value);
       tmpArray.splice(index, 1);
-      if ( tmpArray.length === 0) {
-        delete this.filter[title];
-      } else {
-        this.filter[title] = tmpArray.join(',');
-      }
     }
+    this.filter[title] = tmpArray.join(',');
     this.getUpFilter();
   }
   public selectProperty(value: any) {
     for ( let tile of this.propertyTypes) {
       if (tile.text === value) {
-        if (  tile.active === false) {
-          this.property_type = tile.text;
-          if (this.property_type !== 'all') {
-            this.filter.property_type = this.property_type;
-          } else {
-            delete this.filter.property_type;
-          }
+        if ( tile.active === false) {
+          this.filter.property_type = tile.text;
           this.getUpFilter();
         }
         tile.active = true;
@@ -100,7 +126,18 @@ export class FilterListComponent implements OnInit {
     this.getUpFilter();
   }
   private getUpFilter() {
-    this.router.navigate([this.place_name, 'property', this.listing_type], { queryParams: this.filter} );
-    //this.changeFilter.emit(this.filter);
+    let filter = {};
+    let defaultFilter: any = {
+      sort: 'nestoria_rank',
+      bathrooms: '',
+      bedrooms: '',
+      property_type: 'all',
+    };
+    for ( let key in this.filter ) {
+      if (this.filter[key] !== defaultFilter[key]) {
+        filter[key] = this.filter[key];
+      }
+    }
+    this.router.navigate([this.place_name, 'property', this.listing_type], { queryParams: filter} );
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -18,8 +18,7 @@ declare var $: any;
 export class RealtyPageComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private querySubscription: Subscription;
-  @Output() sendUpValue: EventEmitter<any> = new EventEmitter();
-  selectedOption: string; // for input_search
+  @ViewChild(SearchInputComponent) childComponent: SearchInputComponent;
   viewFilter: boolean;
   hiddenLoader: boolean = true;
   length = 80;
@@ -28,7 +27,6 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
 
   request: any = {
     callback: 'JSONP_CALLBACK',
-    country: 'uk',
     encoding: 'json',
     action: 'search_listings',
     number_of_results: this.pageSize,
@@ -47,23 +45,28 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
     } else {
       this.viewFilter = true;
     }
+    this.childComponent.reload();
     this.querySubscription = this.activateRoute.queryParams.subscribe(
       (queryParam: any) => {
-        this.getFilter(queryParam);
+        this.addFilterToRequest(queryParam);
       }
     );
-
     this.subscription = this.activateRoute.params.subscribe((params): any => {
-      this.request['place_name'] = params['city'];
+      if ( ~params['city'].indexOf('coords_') ) {
+        this.request['centre_point'] = params['city'].slice(7);
+        console.log(  this.request['centre_point']);
+        delete  this.request['place_name']
+      } else {
+        this.request['place_name'] = params['city'];
+        delete this.request['centre_point'];
+      }
       this.request['listing_type'] = params['listing_type'];
-      this.sendUpValue.emit(this.request['place_name']);
       this.getMyFaves();
       this.requestToApi();
     });
 
     SearchInputComponent.onRouteClick.subscribe((country) => {
       this.request['place_name'] = country;
-      this.sendUpValue.emit(this.request['place_name']);
       this.requestToApi();
     });
   }
@@ -99,13 +102,34 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
       this.myFaves = [];
     }
   }
-  public getFilter(filter: any) {
+  public addFilterToRequest(filter: any) {
     console.log(filter);
-
-    /*for(let key in filter) {
+    for(let key in filter) {
       console.log(key + ' = ' + filter[key]);
-      this.request[key] = filter[key];
-    }*/
+      if (key === 'bedrooms') {
+        let tmpArray = filter[key].split(',');
+        if (tmpArray.length === 0) {
+          delete this.request['bedroom_min'];
+          delete this.request['bedroom_max'];
+        } else {
+          this.request['bedroom_min'] = Math.min.apply(null, tmpArray);
+          this.request['bedroom_max'] = Math.max.apply(null, tmpArray);
+        }
+
+      } else if (key === 'bathrooms') {
+        let tmpArray = filter[key].split(',');
+        if (tmpArray.length === 0) {
+          delete this.request['bathroom_min']
+          delete this.request['bathroom_max']
+        } else {
+          this.request['bathroom_min'] = Math.min.apply(null, tmpArray);
+          this.request['bathroom_max'] = Math.max.apply(null, tmpArray);
+        }
+
+      } else {
+        this.request[key] = filter[key];
+      }
+    }
   }
   public openDialogWindow(item: any) {
     console.log(item);
@@ -116,6 +140,7 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
     this.httpService.getJsonpData(this.request)
       .toPromise()
       .then((resp: any) => {
+        console.log(this.request);
         console.log(resp.json());
         return resp.json();
       })
@@ -124,7 +149,6 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
       })
       .then(() => {
         this.listings = this.response['listings'];
-        console.log(this.listings);
         this.length = this.response['total_results'];
         this.hiddenLoader = false;
       });

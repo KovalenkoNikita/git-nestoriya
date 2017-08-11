@@ -1,8 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
+import { DataService } from '../data.service';
+import { Country } from '../country';
+import { SearchInputComponent } from '../search-input/search-input.component';
 
 @Component({
   selector: 'app-search-page',
@@ -10,38 +13,43 @@ import 'rxjs/add/operator/map';
   styleUrls: ['./search-page.component.less']
 })
 export class SearchPageComponent implements OnInit {
-  @Input() searchHistory: string[] = [];
+  currSearchHistory: string[] = [];
+  currCountry: Country;
+  countries: Country[];
+  static updateStates = new Subject();
+  @ViewChild(SearchInputComponent) childComponent: SearchInputComponent;
+  constructor(private router: Router,
+              private dataService: DataService) {
 
+  }
   ngOnInit() {
-    this.getSearchHistory();
+    this.getCountries();
+    this.getCurrCountry();
+    this.getCurrHistory();
   }
-
-  constructor(private router: Router) {
-
+  public routeCity(city: string) {
+    this.router.navigate([city + '/property/buy/']);
+    this.dataService.addCityToHistory(city);
   }
-
-  public routeCounty(country: string) {
-    this.router.navigate([country + '/property/buy/']);
-    if ( !(~this.searchHistory.indexOf( country )) ) {
-      this.searchHistory.push(country);
-      this.setSearchHistory();
-    }
+  public removeItem(city: string) {
+    this.dataService.removeCityFromHistory(city);
   }
-  public removeItemSearchHistory(value: string) {
-    let index = this.searchHistory.indexOf( value );
-    this.searchHistory.splice(index, 1);
-    this.setSearchHistory();
-    console.log('remove');
-    console.log( this.searchHistory );
-
+  public getCurrHistory() {
+    this.currSearchHistory = this.dataService.getCurrHistory();
+    console.log(this.currSearchHistory);
   }
-  public setSearchHistory() {
-    window.localStorage.setItem( 'search_history', this.searchHistory.join(',') );
+  public setCurrCountry(country) {
+    this.dataService.setCurrCountry(country);
+    this.getCurrCountry();
   }
-  public getSearchHistory() {
-    this.searchHistory = window.localStorage.getItem('search_history').split(',');
-    if (this.searchHistory[0] === '') {
-      this.searchHistory = [];
-    }
+  public getCurrCountry() {
+    this.currCountry = this.dataService.getCurrCountry();
+    console.log(this.currCountry);
+    this.childComponent.reload();
+    this.getCurrHistory();
+  }
+  public getCountries() {
+    this.countries = this.dataService.getCountries();
+    console.log(this.countries);
   }
 }

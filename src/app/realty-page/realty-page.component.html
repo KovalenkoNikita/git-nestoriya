@@ -2,7 +2,7 @@
 <app-search-input></app-search-input>
 <md-sidenav-container class="example-sidenav-fab-container" (window:resize)="onResize($event)">
   <md-sidenav #sidenav mode="side" opened="{{viewFilter}}">
-    <app-filter-list (changeFilter)="getFilter($event)">
+    <app-filter-list>
 
     </app-filter-list>
   </md-sidenav>

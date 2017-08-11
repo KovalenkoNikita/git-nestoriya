@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { Subject } from 'rxjs/Subject';
 import { HttpService } from '../http.service';
+import { DataService } from '../data.service';
+import { Country } from '../country';
 
 @Component({
   selector: 'app-search-input',
@@ -10,50 +12,41 @@ import { HttpService } from '../http.service';
   styleUrls: ['./search-input.component.less']
 })
 export class SearchInputComponent implements OnInit {
-
   stateCtrl: FormControl;
   filteredStates: any;
-  searchHistory: string[] = [];
+  @Input() currCountry: Country;
   states: string[] = [];
   static onRouteClick = new Subject();
 
   constructor(private httpService: HttpService,
-              private router: Router) { }
+              private router: Router,
+              private dataService: DataService) {
 
+  }
   ngOnInit() {
-    this.getSearchHistory();
+    this.getCurrCountry();
     this.stateCtrl = new FormControl();
     this.filteredStates = this.stateCtrl.valueChanges
       .startWith(null)
       .map(name => this.filterStates(name));
-
+  }
+  public reload() {
     this.httpService.getCities()
       .subscribe((resp) => {
-        this.states = resp.json()['United Kingdom'];
-        return resp.json()['United Kingdom'];
+        this.states = resp.json()[this.currCountry.nameCountry];
+        console.log(this.states.length);
       });
   }
   public filterStates(val: string) {
     return val ? this.states.filter(s => s.toLowerCase().indexOf(val.toLowerCase()) === 0)
       : this.states;
   }
-  public routeCounty(country: string) {
-    SearchInputComponent.onRouteClick.next(country);
-    this.router.navigate([country + '/property/buy/']);
-    if ( !(~this.searchHistory.indexOf( country )) ) {
-      this.searchHistory.push( country );
-      this.setSearchHistory();
-    }
+  public routeCity(city: string) {
+    this.router.navigate([city + '/property/buy/']);
+    this.dataService.addCityToHistory(city);
   }
-  public setSearchHistory() {
-    window.localStorage.setItem( 'search_history', this.searchHistory.join(',') );
-  }
-  public getStateCtrl(value: string) {
-  }
-  public getSearchHistory() {
-    this.searchHistory = window.localStorage.getItem('search_history').split(',');
-    if (this.searchHistory[0] === '') {
-      this.searchHistory = [];
-    }
+  public getCurrCountry() {
+    this.currCountry = this.dataService.getCurrCountry();
+    console.log(this.currCountry);
   }
 }

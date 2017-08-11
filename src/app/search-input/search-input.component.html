@@ -4,10 +4,10 @@
   >
   </div>
   <md-input-container>
-  <input mdInput [formControl]="stateCtrl" placeholder="State" [mdAutocomplete]="auto" (sendUpValue)="getStateCtrl($event)">
+  <input mdInput [formControl]="stateCtrl" placeholder="State" [mdAutocomplete]="auto">
 </md-input-container>
   <md-autocomplete #auto="mdAutocomplete">
-    <md-option *ngFor="let state of filteredStates | async" [value]="state" (click)="routeCounty(state)">
+    <md-option *ngFor="let state of filteredStates | async" [value]="state" (click)="routeCity(state)">
       {{ state }}
     </md-option>
   </md-autocomplete>

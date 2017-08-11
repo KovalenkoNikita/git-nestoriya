@@ -1,18 +1,27 @@
-<app-search-input></app-search-input>
+<button md-button [mdMenuTriggerFor]="menu" class="select-country">
+  <img class="img-flag" src="../../assets/flags/{{currCountry.nameCountry}}.svg">
+</button>
+<md-menu #menu="mdMenu" >
+  <button *ngFor="let country of countries" md-menu-item (click)="setCurrCountry(country)">
+    <img class="img-flag" src="../../assets/flags/{{country.nameCountry}}.svg">
+    <span>{{country.nameCountry}}</span>
+  </button>
+</md-menu>
+<app-search-input [currCountry]="currCountry"></app-search-input>
 <div class="main-search">
   <div class="list-group">
     <ng-container>
-      <a *ngFor="let item of searchHistory"
+      <a *ngFor="let item of currSearchHistory"
          class="list-group-item list-group-item-action"
-         (click)="routeCounty(item)"
+         (click)="routeCity(item)"
       >{{item}}
         <img class="delete-icon"
              src="../../assets/icons/ic_clear_black_24px.svg"
-             (click)="removeItemSearchHistory(item);$event.stopPropagation()"
+             (click)="removeItem(item);$event.stopPropagation()"
         >
       </a>
     </ng-container>
-    <md-card *ngIf="searchHistory.length == 0">
+    <md-card *ngIf="currSearchHistory.length == 0">
       Not recent.
     </md-card>
   </div>

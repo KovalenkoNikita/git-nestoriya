@@ -19,7 +19,7 @@
   </div>
   <div class="filter">
     <form>
-      <md-select placeholder="Sort" [(ngModel)]="sort" name="Sort" (change)="getUpFilter()">
+      <md-select placeholder="Sort" [(ngModel)]="filter.sort" name="Sort" (change)="getUpFilter()">
         <md-option *ngFor="let option of sortOptions" [value]="option.value">
           {{option.viewValue}}
         </md-option>
@@ -29,7 +29,7 @@
   <span class="filter-title">Beds</span>
   <md-grid-list cols="2" rowHeight="40px">
     <md-grid-tile
-      *ngFor="let tile of bedOptions"
+      *ngFor="let tile of bedrooms"
       [ngClass]="{tileActive: tile.active}"
       [colspan]="tile.cols"
       [rowspan]="tile.rows"
@@ -57,7 +57,8 @@
   <span class="filter-title">Bathrooms</span>
   <md-grid-list cols="2" rowHeight="40px">
     <md-grid-tile
-      *ngFor="let tile of bathOptions"
+      *ngFor="let tile of bathrooms"
+      [ngClass]="{tileActive: tile.active}"
       [colspan]="tile.cols"
       [rowspan]="tile.rows"
       (click)="toggleTile(tile, 'bathrooms')"
