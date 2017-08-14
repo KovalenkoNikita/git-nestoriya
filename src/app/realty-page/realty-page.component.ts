@@ -1,14 +1,14 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-
+import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
 import { HttpService } from "../http.service";
 import { SearchInputComponent } from "../search-input/search-input.component";
-
-declare var $: any;
+import { Country } from '../country';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-realty-page',
@@ -32,42 +32,49 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
     number_of_results: this.pageSize,
     page: 1,
   };
+  currCountry: Country;
   myFaves:  any = [];
   response: any = {};
   listings: any = [];
 
   constructor(private httpService: HttpService,
-              private activateRoute: ActivatedRoute) {
+              private activateRoute: ActivatedRoute,
+              private dataService: DataService,
+              private dialog: MdDialog) {
   }
   public ngOnInit() {
+    this.currCountry = this.dataService.getCurrCountry();
     if (window.innerWidth < 800) {
       this.viewFilter = false;
     } else {
       this.viewFilter = true;
     }
     this.childComponent.reload();
-    this.querySubscription = this.activateRoute.queryParams.subscribe(
-      (queryParam: any) => {
-        this.addFilterToRequest(queryParam);
-      }
-    );
+    this.readingAddressBar();
+
+    SearchInputComponent.onRouteClick.subscribe((country) => {
+      this.request['place_name'] = country;
+      this.requestToApi();
+    });
+  }
+  private readingAddressBar() {
     this.subscription = this.activateRoute.params.subscribe((params): any => {
       if ( ~params['city'].indexOf('coords_') ) {
         this.request['centre_point'] = params['city'].slice(7);
         console.log(  this.request['centre_point']);
-        delete  this.request['place_name']
+        delete this.request['place_name']
       } else {
         this.request['place_name'] = params['city'];
         delete this.request['centre_point'];
       }
       this.request['listing_type'] = params['listing_type'];
       this.getMyFaves();
-      this.requestToApi();
-    });
-
-    SearchInputComponent.onRouteClick.subscribe((country) => {
-      this.request['place_name'] = country;
-      this.requestToApi();
+      this.querySubscription = this.activateRoute.queryParams.subscribe(
+        (queryParam: any) => {
+          this.addFilterToRequest(queryParam);
+          this.requestToApi();
+        }
+      );
     });
   }
   public onResize(event) {
@@ -103,44 +110,48 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
     }
   }
   public addFilterToRequest(filter: any) {
-    console.log(filter);
-    for(let key in filter) {
-      console.log(key + ' = ' + filter[key]);
-      if (key === 'bedrooms') {
-        let tmpArray = filter[key].split(',');
-        if (tmpArray.length === 0) {
-          delete this.request['bedroom_min'];
-          delete this.request['bedroom_max'];
-        } else {
+    let defaultFilter: any = {
+      sort: 'nestoria_rank',
+      bathrooms: '',
+      bedrooms: '',
+      property_type: 'all',
+      price_min: 0,
+      price_max: 1000000
+    };
+    for ( let key in defaultFilter ) {
+      if ( filter[key] ) {
+        if ( 'bedrooms' in filter ) {
+          let tmpArray = filter['bedrooms'].split(',');
           this.request['bedroom_min'] = Math.min.apply(null, tmpArray);
           this.request['bedroom_max'] = Math.max.apply(null, tmpArray);
-        }
-
-      } else if (key === 'bathrooms') {
-        let tmpArray = filter[key].split(',');
-        if (tmpArray.length === 0) {
-          delete this.request['bathroom_min']
-          delete this.request['bathroom_max']
         } else {
+          delete this.request['bedroom_min'];
+          delete this.request['bedroom_max'];
+        }
+        if ( 'bathrooms' in filter ) {
+          let tmpArray = filter['bathrooms'].split(',');
           this.request['bathroom_min'] = Math.min.apply(null, tmpArray);
           this.request['bathroom_max'] = Math.max.apply(null, tmpArray);
+        } else {
+          delete this.request['bathroom_min'];
+          delete this.request['bathroom_max'];
         }
-
+        if (key !== 'bedrooms' && key !== 'bathrooms') {
+          this.request[key] = filter[key];
+        }
       } else {
-        this.request[key] = filter[key];
+        if (key !== 'bedrooms' && key !== 'bathrooms') {
+          delete this.request[key];
+        }
       }
     }
-  }
-  public openDialogWindow(item: any) {
-    console.log(item);
   }
   public requestToApi() {
     this.listings = [];
     this.hiddenLoader = true;
-    this.httpService.getJsonpData(this.request)
+    this.httpService.getJsonpData(this.currCountry.api, this.request)
       .toPromise()
       .then((resp: any) => {
-        console.log(this.request);
         console.log(resp.json());
         return resp.json();
       })
@@ -161,8 +172,31 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
     this.request.number_of_results = event.pageSize;
     this.requestToApi();
   }
+  public openDialogWindow(item: any) {
+    let config = new MdDialogConfig();
+    let dialogRef = this.dialog.open(ModalDialog, config);
+    dialogRef.componentInstance.item = item;
+    dialogRef.componentInstance.place_name = this.request.place_name;
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+    });
+    console.log(item);
+  }
   ngOnDestroy() {
     this.subscription.unsubscribe();
     this.querySubscription.unsubscribe();
+  }
+}
+@Component({
+  selector: 'modal-dialog',
+  templateUrl: 'modal-dialog.html',
+  styleUrls: ['modal-dialog.less']
+})
+export class ModalDialog implements OnInit {
+  public item: any;
+  public place_name: string;
+  constructor(public dialogRef: MdDialogRef<ModalDialog>) {}
+  ngOnInit() {
+    console.log(this.item);
   }
 }

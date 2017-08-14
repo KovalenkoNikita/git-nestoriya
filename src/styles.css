@@ -33,6 +33,9 @@ router-outlet+app-realty-page {
   display: flex;
   flex-direction: column;
 }
+md-dialog-container {
+   padding: 0 !important;
+ }
 .mat-sidenav-content {
   position: absolute !important;
   right: 0;

@@ -3,6 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
+import { IonRangeSliderComponent } from 'ng2-ion-range-slider';
+
+declare var $: any;
 
 @Component({
   selector: 'app-filter-list',
@@ -14,13 +17,13 @@ export class FilterListComponent implements OnInit {
   private querySubscription: Subscription;
   private place_name: string;
   private listing_type: string;
-  // private sort: string = 'nestoria_rank';
-  // private property_type: string = 'all';
   private filter: any = {
     sort: 'nestoria_rank',
     bathrooms: '',
     bedrooms: '',
-    property_type: 'all'
+    property_type: 'all',
+    price_min: 0,
+    price_max: 1000000
   };
   private sortOptions = [
     {value: 'nestoria_rank', viewValue: 'Nestoria Rank'},
@@ -125,6 +128,12 @@ export class FilterListComponent implements OnInit {
     this.listing_type = value;
     this.getUpFilter();
   }
+  public myOnFinish(event) {
+    this.filter.price_min = event.from;
+    this.filter.price_max = event.to;
+    console.log(this.filter);
+    this.getUpFilter();
+  }
   private getUpFilter() {
     let filter = {};
     let defaultFilter: any = {
@@ -132,6 +141,8 @@ export class FilterListComponent implements OnInit {
       bathrooms: '',
       bedrooms: '',
       property_type: 'all',
+      price_min: 0,
+      price_max: 1000000
     };
     for ( let key in this.filter ) {
       if (this.filter[key] !== defaultFilter[key]) {

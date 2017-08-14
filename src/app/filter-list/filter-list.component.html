@@ -40,6 +40,18 @@
   </md-grid-list>
   <span class="filter-title">Price</span>
   <div class="double-range-slider">
+    <ion-range-slider #sliderElement
+                      type="double"
+                      min="0"
+                      max="1000000"
+                      from="{{filter.price_min}}"
+                      to="{{filter.price_max}}"
+                      grid="true"
+                      grid_num="20"
+                      postfix=" $"
+                      (onFinish)="myOnFinish($event)">
+
+    </ion-range-slider>
   </div>
   <span class="filter-title">Property type</span>
   <md-grid-list cols="1" rowHeight="40px">
