@@ -33,7 +33,6 @@ export class GoogleMapComponent implements OnInit {
 
   ngOnInit() {
     this.heightMap = window.innerHeight - 100 + 'px';
-    console.log(this.heightMap);
     this.searchControl = new FormControl();
     this.setCurrentPosition();
 
@@ -60,17 +59,11 @@ export class GoogleMapComponent implements OnInit {
     });
   }
   func(event: any) {
-    /* lat:51.511446425131
-     lng:-0.10418181660156733*/
-    console.log(event);
-
-    /*this.latitude = event.coords.lat;
-    this.longitude = event.coords.lng;*/
+    this.latitude = event.coords.lat;
+    this.longitude = event.coords.lng;
   }
   routeByCoords() {
-    console.log(this.latitude);
-    console.log(this.longitude);
-    //this.router.navigate(['coords_' + this.latitude + ',' + this.longitude + ',' + this.radius, 'property', 'buy']);
+    this.router.navigate(['coords_' + this.latitude + ',' + this.longitude + ',' + this.radius, 'property', 'buy']);
   }
   private setCurrentPosition() {
     if ("geolocation" in navigator) {
@@ -80,10 +73,6 @@ export class GoogleMapComponent implements OnInit {
         this.zoom = 11;
       });
     }
-    setTimeout(() => {
-      console.log(this.latitude);
-      console.log(this.longitude);
-    }, 1000);
   }
   public radiusChange(event: any) {
     this.radius = event;

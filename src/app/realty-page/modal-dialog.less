@@ -2,6 +2,10 @@ img {
   margin-top: 0;
   margin-bottom: 0;
 }
+md-card-header {
+  display: flex;
+  justify-content: space-between;
+}
 md-card-content.mat-card-content {
   display: flex;
   flex-direction: column;
@@ -25,5 +29,19 @@ md-card-content.mat-card-content {
 .short-description {
   color: #a1a1a1;
   font-weight: 400;
+}
+md-card-actions {
+  display: flex;
+  justify-content: space-between;
+  button.mat-mini-fab.mat-button.mat-accent  {
+    background-color: orange;
+    md-icon {
+      margin-bottom: 2px;
+      margin-left: 2px;
+    }
+    .favorite {
+      color: grey;
+    }
+  }
 }
 

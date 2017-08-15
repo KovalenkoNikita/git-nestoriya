@@ -160,7 +160,7 @@ md-dialog-container {
   }
 }
 
-.loaded #loader-wrapper {
+.loaded > #loader-wrapper {
   visibility: hidden;
   -webkit-transform: translateY(-100%);
   -ms-transform: translateY(-100%);
@@ -169,7 +169,7 @@ md-dialog-container {
   transition: all 0.3s 1s ease-out
 }
 
-.loaded #loader-wrapper .loader-section.section-left {
+.loaded > #loader-wrapper .loader-section.section-left {
   -webkit-transform: translateX(-100%);
   -ms-transform: translateX(-100%);
   transform: translateX(-100%);
@@ -177,7 +177,7 @@ md-dialog-container {
   transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1)
 }
 
-.loaded #loader-wrapper .loader-section.section-right {
+.loaded > #loader-wrapper .loader-section.section-right {
   -webkit-transform: translateX(100%);
   -ms-transform: translateX(100%);
   transform: translateX(100%);
@@ -185,7 +185,7 @@ md-dialog-container {
   transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1)
 }
 
-.loaded #loader {
+.loaded > #loader-wrapper #loader {
   opacity: 0;
   -webkit-transition: all 0.3s ease-out;
   transition: all 0.3s ease-out

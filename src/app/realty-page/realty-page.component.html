@@ -1,9 +1,8 @@
-<button md-button class="button-view-filter" (click)="toggleFilter()">Filters</button>
+<button md-button class="button-view-filter" (click)="toggleFilter()">{{'Filters' | translate}}</button>
 <app-search-input></app-search-input>
 <md-sidenav-container class="example-sidenav-fab-container" (window:resize)="onResize($event)">
   <md-sidenav #sidenav mode="side" opened="{{viewFilter}}">
     <app-filter-list>
-
     </app-filter-list>
   </md-sidenav>
   <div class="paginator">
@@ -26,21 +25,26 @@
             <button md-mini-fab
                     class="example-fab"
                     (click)="addToFaves(item); $event.stopPropagation()">
-                    <!--[ngClass]="{disable: findElemToFaves(item, myFaves)}"   -->
-              <md-icon>add</md-icon>
+              <md-icon [ngClass]="{favorite: item.is_favorite}">star</md-icon>
             </button>
           </div>
           <div class="description">
             <span class="title">{{item.title}}</span>
             <ul>
-              <li>{{request['place_name']}}<span class="separator"> · </span></li>
-              <li *ngIf="item.bathroom_number">{{item.bathroom_number}} Bath<span *ngIf="item.bathroom_number > 1">s</span><span class="separator"> · </span></li>
-              <li *ngIf="item.bedroom_number">{{item.bedroom_number}} Bed<span *ngIf="item.bedroom_number > 1">s</span><span class="separator"> · </span></li>
+              <li *ngIf="item.bathroom_number">
+                {{item.bathroom_number}} Bath<span *ngIf="item.bathroom_number > 1">s</span>
+                <span class="separator"> · </span>
+              </li>
+              <li *ngIf="item.bedroom_number">
+                {{item.bedroom_number}} Bed<span *ngIf="item.bedroom_number > 1">s</span>
+                <span class="separator"> · </span>
+              </li>
               <li>{{item.property_type}}</li>
             </ul>
             <span class="short-description">{{item.summary}}</span>
           </div>
         </div>
+        <span></span>
       </md-card>
     </div>
 

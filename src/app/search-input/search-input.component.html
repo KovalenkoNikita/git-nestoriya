@@ -4,7 +4,7 @@
   >
   </div>
   <md-input-container>
-  <input mdInput [formControl]="stateCtrl" placeholder="State" [mdAutocomplete]="auto">
+  <input mdInput [formControl]="stateCtrl" placeholder="{{'Search' | translate}}" [mdAutocomplete]="auto">
 </md-input-container>
   <md-autocomplete #auto="mdAutocomplete">
     <md-option *ngFor="let state of filteredStates | async" [value]="state" (click)="routeCity(state)">

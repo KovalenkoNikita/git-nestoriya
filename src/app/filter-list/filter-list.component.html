@@ -6,14 +6,14 @@
                        color="primary"
                        (change)="changeListingType($event.value)"
                        [checked]="listing_type === 'rent' ? true : false">
-        To Rent
+        {{'To Rent' | translate}}
       </md-radio-button>
       <md-radio-button class="example-margin"
                        value="buy"
                        color="primary"
                        (change)="changeListingType($event.value)"
                        [checked]="listing_type === 'buy' ? true : false">
-        For Sale
+        {{'For Sale' | translate}}
       </md-radio-button>
     </md-radio-group>
   </div>
@@ -21,12 +21,12 @@
     <form>
       <md-select placeholder="Sort" [(ngModel)]="filter.sort" name="Sort" (change)="getUpFilter()">
         <md-option *ngFor="let option of sortOptions" [value]="option.value">
-          {{option.viewValue}}
+          {{option.viewValue | translate}}
         </md-option>
       </md-select>
     </form>
   </div>
-  <span class="filter-title">Beds</span>
+  <span class="filter-title">{{'Bedrooms' | translate}}</span>
   <md-grid-list cols="2" rowHeight="40px">
     <md-grid-tile
       *ngFor="let tile of bedrooms"
@@ -35,10 +35,10 @@
       [rowspan]="tile.rows"
       (click)="toggleTile(tile, 'bedrooms')"
     >
-      {{tile.text}}
+      {{tile.text | translate}}
     </md-grid-tile>
   </md-grid-list>
-  <span class="filter-title">Price</span>
+  <span class="filter-title">{{'Price' | translate}}</span>
   <div class="double-range-slider">
     <ion-range-slider #sliderElement
                       type="double"
@@ -48,12 +48,11 @@
                       to="{{filter.price_max}}"
                       grid="true"
                       grid_num="20"
-                      postfix=" $"
+                      postfix=" {{'£' | translate}}"
                       (onFinish)="myOnFinish($event)">
-
     </ion-range-slider>
   </div>
-  <span class="filter-title">Property type</span>
+  <span class="filter-title">{{'Property type' | translate}}</span>
   <md-grid-list cols="1" rowHeight="40px">
     <md-grid-tile
       *ngFor="let tile of propertyTypes"
@@ -63,10 +62,10 @@
       [rowspan]="tile.rows"
       (click)="selectProperty(tile.text)"
     >
-      {{tile.text}}
+      {{tile.text | translate}}
     </md-grid-tile>
   </md-grid-list>
-  <span class="filter-title">Bathrooms</span>
+  <span class="filter-title">{{'Bathrooms' | translate}}</span>
   <md-grid-list cols="2" rowHeight="40px">
     <md-grid-tile
       *ngFor="let tile of bathrooms"
@@ -75,7 +74,7 @@
       [rowspan]="tile.rows"
       (click)="toggleTile(tile, 'bathrooms')"
     >
-      {{tile.text}}
+      {{tile.text | translate}}
     </md-grid-tile>
   </md-grid-list>
 </md-card>

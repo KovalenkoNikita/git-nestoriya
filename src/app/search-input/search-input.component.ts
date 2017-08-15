@@ -12,10 +12,10 @@ import { Country } from '../country';
   styleUrls: ['./search-input.component.less']
 })
 export class SearchInputComponent implements OnInit {
-  stateCtrl: FormControl;
-  filteredStates: any;
+  private stateCtrl: FormControl;
+  private filteredStates: any;
   @Input() currCountry: Country;
-  states: string[] = [];
+  private states: string[] = [];
   static onRouteClick = new Subject();
 
   constructor(private httpService: HttpService,
@@ -34,7 +34,6 @@ export class SearchInputComponent implements OnInit {
     this.httpService.getCities()
       .subscribe((resp) => {
         this.states = resp.json()[this.currCountry.nameCountry];
-        console.log(this.states.length);
       });
   }
   public filterStates(val: string) {
@@ -47,6 +46,5 @@ export class SearchInputComponent implements OnInit {
   }
   public getCurrCountry() {
     this.currCountry = this.dataService.getCurrCountry();
-    console.log(this.currCountry);
   }
 }

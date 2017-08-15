@@ -1,0 +1,26 @@
+export const LANG_IT_NAME = 'it';
+
+export const LANG_IT_TRANS = {
+  'Map':'Carta geografica',
+  'Faves':'Preferiti',
+  'Search':'Ricerca',
+  'Home':'Casa',
+  'To Rent':'Noleggiare',
+  'For Sale':'In vendita',
+  'Nestoria Rank':'Rank Nestoria',
+  'Price (low to high)':'Prezzo (dal più basso al più alto)',
+  'Price (high to low)':'Prezzo (alto a basso)',
+  'Beds (fewer first)':'Letti (meno prima)',
+  'Beds (more first)':'Letti (più prima)',
+  'Date (older first)':'Data (prima vecchia)',
+  'Date (newer first)':'Data (prima prima)',
+  'Bedrooms':'Camere da letto',
+  'Price':'Prezzo',
+  'Property type':'Tipo di proprietà',
+  'all':'tutti',
+  'flat':'piatto',
+  'house':'casa',
+  'Bathrooms':'Bagni',
+  'Filters':'Filtri',
+  '£':'€',
+};

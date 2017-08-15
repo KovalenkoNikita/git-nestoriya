@@ -1,0 +1,26 @@
+export const LANG_IN_NAME = 'in';
+
+export const LANG_IN_TRANS = {
+  'Map':'नक्शा',
+  'Faves':'पसंदीदा',
+  'Search':'खोज',
+  'Home':'घर',
+  'To Rent':'किराए के लिए',
+  'For Sale':'बेचने के लिए',
+  'Nestoria Rank':'नेस्टोरिया रैंक',
+  'Price (low to high)':'मूल्य (नीचे से ऊपर तक)',
+  'Price (high to low)':'मूल्य (कम से कम)',
+  'Beds (fewer first)':'बेड (कम पहले)',
+  'Beds (more first)':'बेड (और पहले)',
+  'Date (older first)':'तिथि (पुरानी पहले)',
+  'Date (newer first)':'दिनांक (नया पहले)',
+  'Bedrooms':'बेडरूम',
+  'Price':'मूल्य',
+  'Property type':'संपत्ति के प्रकार',
+  'all':'सब',
+  'flat':'समतल',
+  'house':'मकान',
+  'Bathrooms':'बाथरूम',
+  'Filters':'फिल्टर',
+  '£':'₹',
+};

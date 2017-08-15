@@ -21,6 +21,10 @@ import { GoogleMapComponent } from './google-map/google-map.component';
 import { IonRangeSliderModule } from "ng2-ion-range-slider";
 import { HttpService } from "./http.service";
 import { DataService } from "./data.service";
+import { TRANSLATION_PROVIDERS } from './translate/translation';
+import { TranslatePipe } from './translate/translate.pipe';
+import { TranslateService } from './translate/translate.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +36,8 @@ import { DataService } from "./data.service";
     FilterListComponent,
     FavesPageComponent,
     GoogleMapComponent,
-    ModalDialog
+    ModalDialog,
+    TranslatePipe,
   ],
   entryComponents: [ ModalDialog ],
   imports: [
@@ -50,7 +55,7 @@ import { DataService } from "./data.service";
       libraries: ['places']
     })
   ],
-  providers: [ HttpService, DataService, GoogleMapsAPIWrapper ],
+  providers: [ HttpService, DataService, GoogleMapsAPIWrapper, TRANSLATION_PROVIDERS, TranslateService ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

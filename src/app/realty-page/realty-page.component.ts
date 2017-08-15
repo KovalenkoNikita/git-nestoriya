@@ -19,23 +19,23 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private querySubscription: Subscription;
   @ViewChild(SearchInputComponent) childComponent: SearchInputComponent;
-  viewFilter: boolean;
-  hiddenLoader: boolean = true;
-  length = 80;
-  pageSize = 5;
-  pageSizeOptions = [5, 10, 25];
+  private viewFilter: boolean;
+  private hiddenLoader: boolean = true;
+  private length = 80;
+  private pageSize = 10;
+  private pageSizeOptions = [5, 10, 25];
 
-  request: any = {
+  private request: any = {
     callback: 'JSONP_CALLBACK',
     encoding: 'json',
     action: 'search_listings',
     number_of_results: this.pageSize,
     page: 1,
   };
-  currCountry: Country;
-  myFaves:  any = [];
-  response: any = {};
-  listings: any = [];
+  private currCountry: Country;
+  private myFaves:  any = [];
+  private response: any = {};
+  private listings: any = [];
 
   constructor(private httpService: HttpService,
               private activateRoute: ActivatedRoute,
@@ -61,7 +61,6 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
     this.subscription = this.activateRoute.params.subscribe((params): any => {
       if ( ~params['city'].indexOf('coords_') ) {
         this.request['centre_point'] = params['city'].slice(7);
-        console.log(  this.request['centre_point']);
         delete this.request['place_name']
       } else {
         this.request['place_name'] = params['city'];
@@ -94,6 +93,7 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
   }
   public addToFaves(item: any) {
     if ( !this.findElemToFaves(item, this.myFaves) ) {
+      item['is_favorite'] = true;
       this.setMyFaves(item);
     }
   }
@@ -124,6 +124,9 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
           let tmpArray = filter['bedrooms'].split(',');
           this.request['bedroom_min'] = Math.min.apply(null, tmpArray);
           this.request['bedroom_max'] = Math.max.apply(null, tmpArray);
+          if (this.request['bedroom_max'] === 4) {
+            this.request['bedroom_max'] = 50;
+          }
         } else {
           delete this.request['bedroom_min'];
           delete this.request['bedroom_max'];
@@ -132,6 +135,9 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
           let tmpArray = filter['bathrooms'].split(',');
           this.request['bathroom_min'] = Math.min.apply(null, tmpArray);
           this.request['bathroom_max'] = Math.max.apply(null, tmpArray);
+          if (this.request['bathroom_max'] === 4) {
+            this.request['bathroom_max'] = 50;
+          }
         } else {
           delete this.request['bathroom_min'];
           delete this.request['bathroom_max'];
@@ -152,7 +158,6 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
     this.httpService.getJsonpData(this.currCountry.api, this.request)
       .toPromise()
       .then((resp: any) => {
-        console.log(resp.json());
         return resp.json();
       })
       .then((resp: any) => {
@@ -160,6 +165,14 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
       })
       .then(() => {
         this.listings = this.response['listings'];
+        for ( let i = 0; i < this.listings.length; i++ ) {
+          this.listings[i]['place_name'] = this.request.place_name;
+          if ( !this.findElemToFaves(this.listings[i], this.myFaves) ) {
+            this.listings[i]['is_favorite'] = false;
+          } else {
+            this.listings[i]['is_favorite'] = true;
+          }
+        }
         this.length = this.response['total_results'];
         this.hiddenLoader = false;
       });
@@ -176,11 +189,12 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
     let config = new MdDialogConfig();
     let dialogRef = this.dialog.open(ModalDialog, config);
     dialogRef.componentInstance.item = item;
-    dialogRef.componentInstance.place_name = this.request.place_name;
+    dialogRef.componentInstance.icon = 'star';
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      if (result === 'clickButton') {
+        this.addToFaves(item);
+      }
     });
-    console.log(item);
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -193,10 +207,11 @@ export class RealtyPageComponent implements OnInit, OnDestroy {
   styleUrls: ['modal-dialog.less']
 })
 export class ModalDialog implements OnInit {
+  public icon: string;
   public item: any;
-  public place_name: string;
+  public valueSummary: string;
   constructor(public dialogRef: MdDialogRef<ModalDialog>) {}
   ngOnInit() {
-    console.log(this.item);
+    this.valueSummary = this.item.summary;
   }
 }

@@ -49,6 +49,39 @@ button.example-fab.mat-mini-fab.mat-accent {
   padding: 0 10px;
   display: flex;
   flex-direction: column;
+  .description {
+    display: flex;
+    flex-direction: column;
+    * {
+      margin-bottom: 5px;
+    }
+    ul {
+      display: inline-flex;
+      flex-wrap: wrap;
+      li {
+        line-height: 19px;
+        font-size: 1.2em;
+        font-weight: 400;
+        text-transform: capitalize;
+        list-style-type: none;
+        .separator {
+          font-weight: bold;
+          margin-right: 5px;
+        }
+      }
+    }
+    .short-description {
+      color: #a1a1a1;
+      font-size: 1.2em;
+      font-weight: 400;
+    }
+  }
+}
+.item-info {
+  flex-grow: 1;
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
 }
 .item-info > * {
   margin-bottom: 10px;

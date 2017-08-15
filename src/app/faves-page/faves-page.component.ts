@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute} from '@angular/router';
 import { Subscription} from 'rxjs/Subscription';
 import { Router } from '@angular/router';
-
+import { MdDialog, MdDialogConfig } from '@angular/material';
+import { ModalDialog } from '../realty-page/realty-page.component';
 @Component({
   selector: 'app-faves-page',
   templateUrl: './faves-page.component.html',
@@ -10,15 +11,16 @@ import { Router } from '@angular/router';
 })
 export class FavesPageComponent implements OnInit, OnDestroy {
 
-  length = 80;
-  currPage: number = 0;
-  pageSize = 5;
-  pageSizeOptions = [5, 10, 25];
-  myFaves:  any = [];
-  listings: any = [];
-  subscription: Subscription;
+  private length = 80;
+  private currPage: number = 0;
+  private pageSize = 5;
+  private pageSizeOptions = [5, 10, 25];
+  private myFaves:  any = [];
+  private listings: any = [];
+  private subscription: Subscription;
   constructor(private router: Router,
-              private activatedRoute: ActivatedRoute) { }
+              private activatedRoute: ActivatedRoute,
+              private dialog: MdDialog) { }
 
   ngOnInit() {
     this.subscription = this.activatedRoute.params.subscribe((params: any) => {
@@ -38,7 +40,18 @@ export class FavesPageComponent implements OnInit, OnDestroy {
     }
   }
   public openDialogWindow(item: any) {
-    console.log(item);
+    let config = new MdDialogConfig();
+    let dialogRef = this.dialog.open(ModalDialog, config);
+    dialogRef.componentInstance.item = item;
+    dialogRef.componentInstance.icon = 'delete';
+    let result = dialogRef.afterClosed().subscribe(result => {
+      if (result === 'clickButton') {
+        this.deleteElem(item);
+      } else if (result !== 'buy') {
+        item.summary = result;
+        this.setMyFaves();
+      }
+    });
   }
   public deleteElem(item: any) {
     let index = this.myFaves.indexOf(item);

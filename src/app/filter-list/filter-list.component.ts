@@ -3,9 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
-import { IonRangeSliderComponent } from 'ng2-ion-range-slider';
-
-declare var $: any;
 
 @Component({
   selector: 'app-filter-list',
@@ -15,6 +12,7 @@ declare var $: any;
 export class FilterListComponent implements OnInit {
   private subscription: Subscription;
   private querySubscription: Subscription;
+  private price_currency: string;
   private place_name: string;
   private listing_type: string;
   private filter: any = {
@@ -131,7 +129,6 @@ export class FilterListComponent implements OnInit {
   public myOnFinish(event) {
     this.filter.price_min = event.from;
     this.filter.price_max = event.to;
-    console.log(this.filter);
     this.getUpFilter();
   }
   private getUpFilter() {
